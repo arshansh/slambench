@@ -1,0 +1,40 @@
+/home/as12413/opencl_example/hello_world/device/hello_world.cl:51:20: warning: variable 'pixel_x' is uninitialized when used here
+                for(uint pixel_x;pixel_x<320;pixel_x++){
+                                 ^~~~~~~
+/home/as12413/opencl_example/hello_world/device/hello_world.cl:51:19: note: initialize the variable 'pixel_x' to silence this warning
+                for(uint pixel_x;pixel_x<320;pixel_x++){
+                                ^
+                                 = 0
+1 warning generated.
+Warning: Unused kernel argument 'depth'
+Warning: Unused kernel argument 'depthSize_x'
+Warning: Unused kernel argument 'depthSize_y'
+Warning: Unused kernel argument 'in'
+Warning: Unused kernel argument 'inSize_x'
+Warning: Unused kernel argument 'inSize_y'
+Warning: Unused kernel argument 'ratio'
+========================================================================================================================
+|                                           *** Optimization Report ***                                                |
+========================================================================================================================
+| Kernel: AOCmm2metersKernel                                                                               | File:Ln   |
+========================================================================================================================
+========================================================================================================================
+| File Index:                                                                                                          |
+========================================================================================================================
+| [1]: /home/as12413/opencl_example/hello_world/device/hello_world.cl                                                  |
+========================================================================================================================
+Compiler Warning: Can't generate meaningful throughput estimates for Tasks, ignoring request
+
++--------------------------------------------------------------------+
+; Estimated Resource Usage Summary                                   ;
++----------------------------------------+---------------------------+
+; Resource                               + Usage                     ;
++----------------------------------------+---------------------------+
+; Logic utilization                      ;   18%                     ;
+; Dedicated logic registers              ;    8%                     ;
+; Memory blocks                          ;   14%                     ;
+; DSP blocks                             ;    0%                     ;
++----------------------------------------+---------------------------;
+System name: hello_world
+
+WARNING: No global memory accesses.

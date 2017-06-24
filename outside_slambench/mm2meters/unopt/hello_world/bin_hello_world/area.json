@@ -1,0 +1,139 @@
+{
+  "kernels":
+  [
+    {
+      "name":"AOCmm2metersKernel"
+      , "bbtables":
+      [
+        {
+          "header":
+          [
+            {
+              "data":
+              [
+                {
+                  "value":"AOCmm2metersKernel.wii_blk"
+                  , "colspan":2
+                }
+                , {
+                  "value":"Resources"
+                  , "colspan":4
+                }
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"Operations"
+                  , "colspan":2
+                }
+                , "LEs"
+                , "FFs"
+                , "RAMs"
+                , "DSPs"
+              ]
+            }
+          ]
+          , "body":
+          [
+            {
+              "data":
+              [
+                {
+                  "value":"Unknown Line"
+                  , "file":0
+                  , "line":0
+                  , "colspan":2
+                }
+                , "0"
+                , "0"
+                , "0"
+                , "0"
+              ]
+            }
+          ]
+        }
+        , {
+          "header":
+          [
+            {
+              "data":
+              [
+                {
+                  "value":"entry"
+                  , "colspan":2
+                }
+                , {
+                  "value":"Resources"
+                  , "colspan":4
+                }
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"Operations"
+                  , "colspan":2
+                }
+                , "LEs"
+                , "FFs"
+                , "RAMs"
+                , "DSPs"
+              ]
+            }
+          ]
+          , "body":
+          [
+            {
+              "data":
+              [
+                {
+                  "value":"hello_world.cl:47"
+                  , "file":1
+                  , "line":47
+                  , "colspan":2
+                }
+                , "1446"
+                , "5694"
+                , "35"
+                , "11"
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"hello_world.cl:48"
+                  , "file":1
+                  , "line":48
+                  , "colspan":2
+                }
+                , "1"
+                , "1"
+                , "0"
+                , "0"
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"Unknown Line"
+                  , "file":0
+                  , "line":0
+                  , "colspan":2
+                }
+                , "235"
+                , "519"
+                , "2"
+                , "0"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

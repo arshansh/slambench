@@ -1,0 +1,46 @@
+========================================================================================================================
+|                                           *** Optimization Report ***                                                |
+========================================================================================================================
+| Kernel: AOCmm2metersKernel                                                                               | File:Ln   |
+========================================================================================================================
+| Loop for.cond1.preheader                                                                                 | [1]:52    |
+|   Pipelined execution inferred.                                                                          |           |
+|   Successive iterations launched every 2 cycles due to:                                                  |           |
+|                                                                                                          |           |
+|       Pipeline structure                                                                                 |           |
+|                                                                                                          |           |
+|   Iterations will be executed serially across the following region:                                      |           |
+|                                                                                                          |           |
+|       Loop for.body3                                                                                     |           |
+|       due to:                                                                                            |           |
+|       Memory dependency on Store Operation from:                                                         | [1]:56    |
+|         Store Operation                                                                                  | [1]:56    |
+------------------------------------------------------------------------------------------------------------------------
+| Loop for.body3                                                                                           |           |
+|   Pipelined execution inferred.                                                                          |           |
+|   Successive iterations launched every 302 cycles due to:                                                |           |
+|                                                                                                          |           |
+|       Memory dependency on Store Operation from:                                                         | [1]:56    |
+|         Store Operation                                                                                  | [1]:56    |
+|       Largest Critical Path Contributors:                                                                |           |
+|           53%: Store Operation                                                                           | [1]:56    |
+|           46%: Store Operation                                                                           | [1]:56    |
+========================================================================================================================
+| File Index:                                                                                                          |
+========================================================================================================================
+| [1]: /home/as12413/opencl_example/hello_world/device/hello_world.cl                                                  |
+========================================================================================================================
+Compiler Warning: Can't generate meaningful throughput estimates for Tasks, ignoring request
+
++--------------------------------------------------------------------+
+; Estimated Resource Usage Summary                                   ;
++----------------------------------------+---------------------------+
+; Resource                               + Usage                     ;
++----------------------------------------+---------------------------+
+; Logic utilization                      ;   86%                     ;
+; Dedicated logic registers              ;   38%                     ;
+; Memory blocks                          ;   94%                     ;
+; DSP blocks                             ;   13%                     ;
++----------------------------------------+---------------------------;
+System name: hello_world
+

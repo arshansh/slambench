@@ -1,0 +1,16 @@
+package require -exact qsys 12.1
+set_validation_property AUTOMATIC_VALIDATION false
+
+add_instance kernel_system kernel_system
+
+add_connection board.kernel_clk kernel_system.clock_reset
+add_connection board.kernel_clk2x kernel_system.clock_reset2x
+add_connection board.kernel_reset kernel_system.clock_reset_reset
+add_connection kernel_system.kernel_mem0 board.kernel_mem0
+add_connection kernel_system.kernel_mem1 board.kernel_mem1
+add_connection board.kernel_irq kernel_system.kernel_irq
+add_connection board.kernel_cra kernel_system.kernel_cra
+add_connection board.acl_internal_snoop kernel_system.cc_snoop
+add_connection board.kernel_clk kernel_system.cc_snoop_clk
+
+save_system

@@ -1,0 +1,31 @@
+/home/as12413/opencl_example/hello_world/device/hello_world.cl:92:58: warning: declaring kernel argument with no 'restrict' may lead to low kernel performance
+__kernel void AOCbilateralFilterkernel( __global float * out,
+                                                         ^
+/home/as12413/opencl_example/hello_world/device/hello_world.cl:93:26: warning: declaring kernel argument with no 'restrict' may lead to low kernel performance
+                const __global float * in,
+                                       ^
+/home/as12413/opencl_example/hello_world/device/hello_world.cl:94:26: warning: declaring kernel argument with no 'restrict' may lead to low kernel performance
+                const __global float * gaussian,
+                                       ^
+3 warnings generated.
+========================================================================================================================
+|                                           *** Optimization Report ***                                                |
+Kernel throughput analysis for              : AOCbilateralFilterkernel
+ .. simd work items                         : 1
+ .. compute units                           : 1
+ .. throughput due to control flow analysis : 0.23 K work items/second
+ .. kernel global memory bandwidth analysis : 11520.00 MB/second
+ .. kernel number of local memory banks     : none 
+
++--------------------------------------------------------------------+
+; Estimated Resource Usage Summary                                   ;
++----------------------------------------+---------------------------+
+; Resource                               + Usage                     ;
++----------------------------------------+---------------------------+
+; Logic utilization                      ;   33%                     ;
+; Dedicated logic registers              ;   14%                     ;
+; Memory blocks                          ;   29%                     ;
+; DSP blocks                             ;    2%                     ;
++----------------------------------------+---------------------------;
+System name: hello_world
+

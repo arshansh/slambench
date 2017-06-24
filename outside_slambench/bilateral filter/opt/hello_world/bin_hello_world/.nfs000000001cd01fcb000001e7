@@ -1,0 +1,4 @@
+/home/as12413/opencl_example/hello_world/device/hello_world.cl:37:16: warning: unknown attribute 'max_global_work_dim' ignored
+__attribute__((max_global_work_dim(0))) 
+               ^
+1 warning generated.

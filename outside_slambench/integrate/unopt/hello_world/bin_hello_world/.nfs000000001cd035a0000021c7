@@ -1,0 +1,108 @@
+========================================================================================================================
+|                                           *** Optimization Report ***                                                |
+========================================================================================================================
+| Kernel: AOCmm2metersKernel                                                                               | File:Ln   |
+========================================================================================================================
+| Loop for.cond1.preheader                                                                                 | [1]:53    |
+|   Pipelined execution inferred.                                                                          |           |
+|   Successive iterations launched every 2 cycles due to:                                                  |           |
+|                                                                                                          |           |
+|       Pipeline structure                                                                                 |           |
+------------------------------------------------------------------------------------------------------------------------
+| Loop for.body3                                                                                           | [1]:55    |
+|   Pipelined execution inferred.                                                                          |           |
+|   Successive iterations launched every 32 cycles due to:                                                 |           |
+|                                                                                                          |           |
+|       Memory dependency on Store Operation from:                                                         | [1]:57    |
+|         Store Operation                                                                                  | [1]:57    |
+|       Largest Critical Path Contributors:                                                                |           |
+|           48%: Store Operation                                                                           | [1]:57    |
+|           48%: Store Operation                                                                           | [1]:57    |
+|                                                                                                          |           |
+|       Memory dependency on Store Operation from:                                                         | [1]:57    |
+|         Store Operation                                                                                  | [1]:57    |
+|       Largest Critical Path Contributors:                                                                |           |
+|           48%: Store Operation                                                                           | [1]:57    |
+|           48%: Store Operation                                                                           | [1]:57    |
+|                                                                                                          |           |
+|       Memory dependency on Store Operation from:                                                         | [1]:57    |
+|         Store Operation                                                                                  | [1]:57    |
+|       Largest Critical Path Contributors:                                                                |           |
+|           48%: Store Operation                                                                           | [1]:57    |
+|           48%: Store Operation                                                                           | [1]:57    |
+|                                                                                                          |           |
+|       Memory dependency on Store Operation from:                                                         | [1]:57    |
+|         Store Operation                                                                                  | [1]:57    |
+|       Largest Critical Path Contributors:                                                                |           |
+|           48%: Store Operation                                                                           | [1]:57    |
+|           48%: Store Operation                                                                           | [1]:57    |
+|                                                                                                          |           |
+|       Memory dependency on Store Operation from:                                                         | [1]:57    |
+|         Store Operation                                                                                  | [1]:57    |
+|       Largest Critical Path Contributors:                                                                |           |
+|           48%: Store Operation                                                                           | [1]:57    |
+|           48%: Store Operation                                                                           | [1]:57    |
+|                                                                                                          |           |
+|       Memory dependency on Store Operation from:                                                         | [1]:57    |
+|         Store Operation                                                                                  | [1]:57    |
+|       Largest Critical Path Contributors:                                                                |           |
+|           48%: Store Operation                                                                           | [1]:57    |
+|           48%: Store Operation                                                                           | [1]:57    |
+|                                                                                                          |           |
+|       Memory dependency on Store Operation from:                                                         | [1]:57    |
+|         Store Operation                                                                                  | [1]:57    |
+|       Largest Critical Path Contributors:                                                                |           |
+|           48%: Store Operation                                                                           | [1]:57    |
+|           48%: Store Operation                                                                           | [1]:57    |
+|                                                                                                          |           |
+|       Memory dependency on Store Operation from:                                                         | [1]:57    |
+|         Store Operation                                                                                  | [1]:57    |
+|       Largest Critical Path Contributors:                                                                |           |
+|           48%: Store Operation                                                                           | [1]:57    |
+|           48%: Store Operation                                                                           | [1]:57    |
+|                                                                                                          |           |
+|   Additional memory dependencies:                                                                        |           |
+|                                                                                                          |           |
+|       Memory dependency on Store Operation from:                                                         | [1]:57    |
+|         Store Operation                                                                                  | [1]:57    |
+|         Store Operation                                                                                  | [1]:57    |
+|         Store Operation                                                                                  | [1]:57    |
+|                                                                                                          |           |
+|       Memory dependency on Store Operation from:                                                         | [1]:57    |
+|         Store Operation                                                                                  | [1]:57    |
+|         Store Operation                                                                                  | [1]:57    |
+|                                                                                                          |           |
+|       Memory dependency on Store Operation from:                                                         | [1]:57    |
+|         Store Operation                                                                                  | [1]:57    |
+|         Store Operation                                                                                  | [1]:57    |
+|                                                                                                          |           |
+|       Memory dependency on Store Operation from:                                                         | [1]:57    |
+|         Store Operation                                                                                  | [1]:57    |
+|         Store Operation                                                                                  | [1]:57    |
+|                                                                                                          |           |
+|       Memory dependency on Store Operation from:                                                         | [1]:57    |
+|         Store Operation                                                                                  | [1]:57    |
+|         Store Operation                                                                                  | [1]:57    |
+|         Store Operation                                                                                  | [1]:57    |
+------------------------------------------------------------------------------------------------------------------------
+| Loop for.body17                                                                                          | [1]:61    |
+|   Pipelined execution inferred.                                                                          |           |
+========================================================================================================================
+| File Index:                                                                                                          |
+========================================================================================================================
+| [1]: /home/as12413/opencl_example/hello_world/device/hello_world.cl                                                  |
+========================================================================================================================
+Compiler Warning: Can't generate meaningful throughput estimates for Tasks, ignoring request
+
++--------------------------------------------------------------------+
+; Estimated Resource Usage Summary                                   ;
++----------------------------------------+---------------------------+
+; Resource                               + Usage                     ;
++----------------------------------------+---------------------------+
+; Logic utilization                      ;   35%                     ;
+; Dedicated logic registers              ;   15%                     ;
+; Memory blocks                          ;   34%                     ;
+; DSP blocks                             ;    2%                     ;
++----------------------------------------+---------------------------;
+System name: hello_world
+

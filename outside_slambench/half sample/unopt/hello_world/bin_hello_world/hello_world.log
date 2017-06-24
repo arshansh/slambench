@@ -1,0 +1,28 @@
+/home/as12413/opencl_example/hello_world/device/hello_world.cl:37:63: warning: declaring kernel argument with no 'restrict' may lead to low kernel performance
+__kernel void AOChalfSampleRobustImageKernel(__global float * out,
+                                                              ^
+/home/as12413/opencl_example/hello_world/device/hello_world.cl:38:26: warning: declaring kernel argument with no 'restrict' may lead to low kernel performance
+                __global const float * in,
+                                       ^
+2 warnings generated.
+========================================================================================================================
+|                                           *** Optimization Report ***                                                |
+Kernel throughput analysis for              : AOChalfSampleRobustImageKernel
+ .. simd work items                         : 1
+ .. compute units                           : 1
+ .. throughput due to control flow analysis : 0.23 K work items/second
+ .. kernel global memory bandwidth analysis : 1103.45 MB/second
+ .. kernel number of local memory banks     : none 
+
++--------------------------------------------------------------------+
+; Estimated Resource Usage Summary                                   ;
++----------------------------------------+---------------------------+
+; Resource                               + Usage                     ;
++----------------------------------------+---------------------------+
+; Logic utilization                      ;   26%                     ;
+; Dedicated logic registers              ;   11%                     ;
+; Memory blocks                          ;   21%                     ;
+; DSP blocks                             ;    1%                     ;
++----------------------------------------+---------------------------;
+System name: hello_world
+

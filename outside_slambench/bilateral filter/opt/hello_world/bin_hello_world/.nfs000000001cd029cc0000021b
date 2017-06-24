@@ -1,0 +1,10 @@
+/home/as12413/opencl_example/hello_world/device/hello_world.cl:92:58: warning: declaring kernel argument with no 'restrict' may lead to low kernel performance
+__kernel void AOCbilateralFilterkernel( __global float * out,
+                                                         ^
+/home/as12413/opencl_example/hello_world/device/hello_world.cl:93:26: warning: declaring kernel argument with no 'restrict' may lead to low kernel performance
+                const __global float * in,
+                                       ^
+/home/as12413/opencl_example/hello_world/device/hello_world.cl:94:26: warning: declaring kernel argument with no 'restrict' may lead to low kernel performance
+                const __global float * gaussian,
+                                       ^
+3 warnings generated.

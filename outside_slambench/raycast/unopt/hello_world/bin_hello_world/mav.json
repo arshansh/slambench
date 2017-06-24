@@ -1,0 +1,271 @@
+{
+  "functions":
+  [
+    {
+      "type":"container"
+      , "id2":14
+      , "name":"AOCintegrateKernel"
+      , "file":""
+      , "line":"0"
+      , "order":0
+      , "children":[
+        {
+          "type":"container"
+          , "id2":15
+          , "name":""
+          , "file":""
+          , "line":"0"
+          , "order":0
+          , "children":[
+            {
+              "type":"bb"
+              , "id2":16
+              , "name":"Basic Block 0"
+              , "file":""
+              , "line":"0"
+              , "order":0
+              , "children":[
+                {
+                  "type":"inst"
+                  , "id2":20
+                  , "name":"Load"
+                  , "file":"1"
+                  , "line":"45"
+                  , "order":22
+                  , "details":
+                  {
+                    "Width":"512 bits"
+                    , "Type":"Simple"
+                    , "Stall-free":"No"
+                  }
+                }
+                ,
+                {
+                  "type":"inst"
+                  , "id2":21
+                  , "name":"Load"
+                  , "file":"1"
+                  , "line":"45"
+                  , "order":27
+                  , "details":
+                  {
+                    "Width":"512 bits"
+                    , "Type":"Simple"
+                    , "Stall-free":"No"
+                  }
+                }
+              ]
+            }
+            ,
+            {
+              "type":"bb"
+              , "id2":17
+              , "name":"Basic Block 1"
+              , "file":""
+              , "line":"0"
+              , "order":1
+            }
+            ,
+            {
+              "type":"bb"
+              , "id2":18
+              , "name":"Basic Block 2"
+              , "file":""
+              , "line":"0"
+              , "order":2
+              , "children":[
+                {
+                  "type":"inst"
+                  , "id2":22
+                  , "name":"Load"
+                  , "file":"1"
+                  , "line":"110"
+                  , "order":35
+                  , "details":
+                  {
+                    "Width":"32 bits"
+                    , "Type":"Burst-coalesced"
+                    , "Stall-free":"No"
+                  }
+                }
+                ,
+                {
+                  "type":"inst"
+                  , "id2":23
+                  , "name":"Load"
+                  , "file":"1"
+                  , "line":"73"
+                  , "order":269
+                  , "details":
+                  {
+                    "Width":"32 bits"
+                    , "Type":"Burst-coalesced"
+                    , "Stall-free":"No"
+                  }
+                }
+                ,
+                {
+                  "type":"inst"
+                  , "id2":24
+                  , "name":"Store"
+                  , "file":"1"
+                  , "line":"61"
+                  , "order":490
+                  , "details":
+                  {
+                    "Width":"32 bits"
+                    , "Type":"Burst-coalesced"
+                    , "Stall-free":"No"
+                  }
+                }
+              ]
+            }
+            ,
+            {
+              "type":"bb"
+              , "id2":19
+              , "name":"Basic Block 3"
+              , "file":""
+              , "line":"0"
+              , "order":3
+            }
+          ]
+        }
+        ,
+        {
+          "type":"container"
+          , "id2":25
+          , "name":""
+          , "file":""
+          , "line":"0"
+          , "order":0
+          , "children":[
+            {
+              "type":"memtype"
+              , "id2":26
+              , "name":"Global Memory"
+              , "file":""
+              , "line":"0"
+              , "order":0
+              , "children":[
+                {
+                  "type":"memsys"
+                  , "id2":27
+                  , "name":""
+                  , "file":""
+                  , "line":"0"
+                  , "order":0
+                  , "children":[
+                    {
+                      "type":"bank"
+                      , "id2":28
+                      , "name":"Bank 0"
+                      , "file":""
+                      , "line":"0"
+                      , "order":0
+                      , "children":[
+                        {
+                          "type":"port"
+                          , "id2":29
+                          , "name":"Port 0"
+                          , "file":""
+                          , "line":"0"
+                          , "order":0
+                          , "edges":[
+                            {
+                              "from":29
+                              , "to":20
+                              , "type":"PORT"
+                            }
+                            ,
+                            {
+                              "from":29
+                              , "to":21
+                              , "type":"PORT"
+                            }
+                            ,
+                            {
+                              "from":29
+                              , "to":22
+                              , "type":"PORT"
+                            }
+                            ,
+                            {
+                              "from":29
+                              , "to":23
+                              , "type":"PORT"
+                            }
+                            ,
+                            {
+                              "from":29
+                              , "to":24
+                              , "type":"PORT"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                    ,
+                    {
+                      "type":"bank"
+                      , "id2":30
+                      , "name":"Bank 1"
+                      , "file":""
+                      , "line":"0"
+                      , "order":1
+                      , "children":[
+                        {
+                          "type":"port"
+                          , "id2":31
+                          , "name":"Port 0"
+                          , "file":""
+                          , "line":"0"
+                          , "order":0
+                          , "edges":[
+                            {
+                              "from":31
+                              , "to":20
+                              , "type":"PORT"
+                            }
+                            ,
+                            {
+                              "from":31
+                              , "to":21
+                              , "type":"PORT"
+                            }
+                            ,
+                            {
+                              "from":31
+                              , "to":22
+                              , "type":"PORT"
+                            }
+                            ,
+                            {
+                              "from":31
+                              , "to":23
+                              , "type":"PORT"
+                            }
+                            ,
+                            {
+                              "from":31
+                              , "to":24
+                              , "type":"PORT"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+  , "fileIndexMap":
+  {
+    "/home/as12413/opencl_example/hello_world/device/hello_world.cl":"1"
+  }
+}

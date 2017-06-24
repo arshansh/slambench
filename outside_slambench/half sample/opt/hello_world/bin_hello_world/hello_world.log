@@ -1,0 +1,80 @@
+/home/as12413/opencl_example/hello_world/device/hello_world.cl:37:63: warning: declaring kernel argument with no 'restrict' may lead to low kernel performance
+__kernel void AOChalfSampleRobustImageKernel(__global float * out,
+                                                              ^
+/home/as12413/opencl_example/hello_world/device/hello_world.cl:38:26: warning: declaring kernel argument with no 'restrict' may lead to low kernel performance
+                __global const float * in,
+                                       ^
+2 warnings generated.
+========================================================================================================================
+|                                           *** Optimization Report ***                                                |
+========================================================================================================================
+| Kernel: AOChalfSampleRobustImageKernel                                                                   | File:Ln   |
+========================================================================================================================
+| Loop for.cond2.preheader                                                                                 | [1]:54    |
+|   Pipelined execution inferred.                                                                          |           |
+|   Successive iterations launched every 2 cycles due to:                                                  |           |
+|                                                                                                          |           |
+|       Pipeline structure                                                                                 |           |
+|                                                                                                          |           |
+|   Iterations will be executed serially across the following regions:                                     |           |
+|                                                                                                          |           |
+|       Loop for.body4                                                                                     | [1]:55    |
+|       due to:                                                                                            |           |
+|       Memory dependency on Load Operation from:                                                          | [1]:63    |
+|         Store Operation                                                                                  | [1]:74    |
+|                                                                                                          |           |
+|       Loop for.body4                                                                                     | [1]:55    |
+|       due to:                                                                                            |           |
+|       Memory dependency on Load Operation from:                                                          | [1]:67    |
+|         Store Operation                                                                                  | [1]:74    |
+------------------------------------------------------------------------------------------------------------------------
+| Loop for.body4                                                                                           | [1]:55    |
+|   Pipelined execution inferred.                                                                          |           |
+|   Successive iterations launched every 2 cycles due to:                                                  |           |
+|                                                                                                          |           |
+|       Pipeline structure                                                                                 |           |
+|                                                                                                          |           |
+|   Iterations will be executed serially across the following regions:                                     |           |
+|                                                                                                          |           |
+|       Loop for.body15.lr.ph                                                                              | [1]:64    |
+|       due to:                                                                                            |           |
+|       Memory dependency on Load Operation from:                                                          | [1]:63    |
+|         Store Operation                                                                                  | [1]:74    |
+|                                                                                                          |           |
+|       Loop for.body15.lr.ph                                                                              | [1]:64    |
+|       due to:                                                                                            |           |
+|       Memory dependency on Load Operation from:                                                          | [1]:67    |
+|         Store Operation                                                                                  | [1]:74    |
+------------------------------------------------------------------------------------------------------------------------
+| Loop for.body15.lr.ph                                                                                    | [1]:64    |
+|   Pipelined execution inferred.                                                                          |           |
+|   Successive iterations launched every 2 cycles due to:                                                  |           |
+|                                                                                                          |           |
+|       Pipeline structure                                                                                 |           |
+------------------------------------------------------------------------------------------------------------------------
+| Loop for.body15                                                                                          | [1]:65    |
+|   Pipelined execution inferred.                                                                          |           |
+|   Successive iterations launched every 9 cycles due to:                                                  |           |
+|                                                                                                          |           |
+|       Data dependency on variable t                                                                      | [1]:62    |
+|       Largest Critical Path Contributor:                                                                 |           |
+|           95%: Fadd Operation                                                                            | [1]:70    |
+========================================================================================================================
+| File Index:                                                                                                          |
+========================================================================================================================
+| [1]: /home/as12413/opencl_example/hello_world/device/hello_world.cl                                                  |
+========================================================================================================================
+Compiler Warning: Can't generate meaningful throughput estimates for Tasks, ignoring request
+
++--------------------------------------------------------------------+
+; Estimated Resource Usage Summary                                   ;
++----------------------------------------+---------------------------+
+; Resource                               + Usage                     ;
++----------------------------------------+---------------------------+
+; Logic utilization                      ;   28%                     ;
+; Dedicated logic registers              ;   13%                     ;
+; Memory blocks                          ;   23%                     ;
+; DSP blocks                             ;    1%                     ;
++----------------------------------------+---------------------------;
+System name: hello_world
+

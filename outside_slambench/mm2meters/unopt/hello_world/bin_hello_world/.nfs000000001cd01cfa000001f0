@@ -1,0 +1,7 @@
+/home/as12413/opencl_example/hello_world/device/hello_world.cl:38:20: warning: declaring kernel argument with no 'restrict' may lead to low kernel performance
+                __global float * depth,
+                                 ^
+/home/as12413/opencl_example/hello_world/device/hello_world.cl:41:27: warning: declaring kernel argument with no 'restrict' may lead to low kernel performance
+                const __global ushort * in ,
+                                        ^
+2 warnings generated.

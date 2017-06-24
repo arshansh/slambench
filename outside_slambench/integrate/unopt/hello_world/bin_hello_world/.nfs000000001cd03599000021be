@@ -1,0 +1,88 @@
+========================================================================================================================
+|                                           *** Optimization Report ***                                                |
+========================================================================================================================
+| Kernel: AOCmm2metersKernel                                                                               | File:Ln   |
+========================================================================================================================
+| Loop for.cond1.preheader                                                                                 | [1]:52    |
+|   Pipelined execution inferred.                                                                          |           |
+|   Successive iterations launched every 2 cycles due to:                                                  |           |
+|                                                                                                          |           |
+|       Pipeline structure                                                                                 |           |
+|                                                                                                          |           |
+|   Iterations will be executed serially across the following regions:                                     |           |
+|                                                                                                          |           |
+|       Loop for.body3                                                                                     | [1]:54    |
+|       Loop for.body3.1                                                                                   | [1]:54    |
+|       Loop for.body3.2                                                                                   | [1]:54    |
+|       Loop for.body3.3                                                                                   | [1]:54    |
+|       Loop for.body3.4                                                                                   | [1]:54    |
+|       due to:                                                                                            |           |
+|       Memory dependency on Store Operation from:                                                         | [1]:56    |
+|         Store Operation                                                                                  | [1]:56    |
+|         Store Operation                                                                                  | [1]:56    |
+|         Store Operation                                                                                  | [1]:56    |
+|         Store Operation                                                                                  | [1]:56    |
+|                                                                                                          |           |
+|       Loop for.body3                                                                                     | [1]:54    |
+|       Loop for.body3.1                                                                                   | [1]:54    |
+|       Loop for.body3.2                                                                                   | [1]:54    |
+|       Loop for.body3.3                                                                                   | [1]:54    |
+|       Loop for.body3.4                                                                                   | [1]:54    |
+|       due to:                                                                                            |           |
+|       Memory dependency on Store Operation from:                                                         | [1]:56    |
+|         Store Operation                                                                                  | [1]:56    |
+|         Store Operation                                                                                  | [1]:56    |
+|         Store Operation                                                                                  | [1]:56    |
+|                                                                                                          |           |
+|       Loop for.body3                                                                                     | [1]:54    |
+|       Loop for.body3.1                                                                                   | [1]:54    |
+|       Loop for.body3.2                                                                                   | [1]:54    |
+|       Loop for.body3.3                                                                                   | [1]:54    |
+|       Loop for.body3.4                                                                                   | [1]:54    |
+|       due to:                                                                                            |           |
+|       Memory dependency on Store Operation from:                                                         | [1]:56    |
+|         Store Operation                                                                                  | [1]:56    |
+|         Store Operation                                                                                  | [1]:56    |
+|                                                                                                          |           |
+|       Loop for.body3                                                                                     | [1]:54    |
+|       Loop for.body3.1                                                                                   | [1]:54    |
+|       Loop for.body3.2                                                                                   | [1]:54    |
+|       Loop for.body3.3                                                                                   | [1]:54    |
+|       Loop for.body3.4                                                                                   | [1]:54    |
+|       due to:                                                                                            |           |
+|       Memory dependency on Store Operation from:                                                         | [1]:56    |
+|         Store Operation                                                                                  | [1]:56    |
+------------------------------------------------------------------------------------------------------------------------
+| Loop for.body3                                                                                           | [1]:54    |
+|   Pipelined execution inferred.                                                                          |           |
+------------------------------------------------------------------------------------------------------------------------
+| Loop for.body3.1                                                                                         | [1]:54    |
+|   Pipelined execution inferred.                                                                          |           |
+------------------------------------------------------------------------------------------------------------------------
+| Loop for.body3.2                                                                                         | [1]:54    |
+|   Pipelined execution inferred.                                                                          |           |
+------------------------------------------------------------------------------------------------------------------------
+| Loop for.body3.3                                                                                         | [1]:54    |
+|   Pipelined execution inferred.                                                                          |           |
+------------------------------------------------------------------------------------------------------------------------
+| Loop for.body3.4                                                                                         | [1]:54    |
+|   Pipelined execution inferred.                                                                          |           |
+========================================================================================================================
+| File Index:                                                                                                          |
+========================================================================================================================
+| [1]: /home/as12413/opencl_example/hello_world/device/hello_world.cl                                                  |
+========================================================================================================================
+Compiler Warning: Can't generate meaningful throughput estimates for Tasks, ignoring request
+
++--------------------------------------------------------------------+
+; Estimated Resource Usage Summary                                   ;
++----------------------------------------+---------------------------+
+; Resource                               + Usage                     ;
++----------------------------------------+---------------------------+
+; Logic utilization                      ;   79%                     ;
+; Dedicated logic registers              ;   35%                     ;
+; Memory blocks                          ;   86%                     ;
+; DSP blocks                             ;   12%                     ;
++----------------------------------------+---------------------------;
+System name: hello_world
+

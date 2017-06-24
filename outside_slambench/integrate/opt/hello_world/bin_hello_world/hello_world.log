@@ -1,0 +1,21 @@
+========================================================================================================================
+|                                           *** Optimization Report ***                                                |
+Kernel throughput analysis for              : AOCintegrateKernel
+ .. simd work items                         : 1
+ .. compute units                           : 1
+ .. throughput due to control flow analysis : 0.23 M work items/second
+ .. kernel global memory bandwidth analysis : 3344.83 MB/second
+ .. kernel number of local memory banks     : none 
+
++--------------------------------------------------------------------+
+; Estimated Resource Usage Summary                                   ;
++----------------------------------------+---------------------------+
+; Resource                               + Usage                     ;
++----------------------------------------+---------------------------+
+; Logic utilization                      ;   40%                     ;
+; Dedicated logic registers              ;   17%                     ;
+; Memory blocks                          ;   28%                     ;
+; DSP blocks                             ;    5%                     ;
++----------------------------------------+---------------------------;
+System name: hello_world
+

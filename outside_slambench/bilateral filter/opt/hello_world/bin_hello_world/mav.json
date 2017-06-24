@@ -1,0 +1,345 @@
+{
+  "functions":
+  [
+    {
+      "type":"container"
+      , "id2":19
+      , "name":"AOCbilateralFilterkernel"
+      , "file":""
+      , "line":"0"
+      , "order":0
+      , "children":[
+        {
+          "type":"container"
+          , "id2":20
+          , "name":""
+          , "file":""
+          , "line":"0"
+          , "order":0
+          , "children":[
+            {
+              "type":"bb"
+              , "id2":21
+              , "name":"Basic Block 0"
+              , "file":""
+              , "line":"0"
+              , "order":0
+            }
+            ,
+            {
+              "type":"bb"
+              , "id2":22
+              , "name":"Basic Block 1"
+              , "file":""
+              , "line":"0"
+              , "order":1
+            }
+            ,
+            {
+              "type":"bb"
+              , "id2":23
+              , "name":"Basic Block 2"
+              , "file":""
+              , "line":"0"
+              , "order":2
+              , "children":[
+                {
+                  "type":"inst"
+                  , "id2":30
+                  , "name":"Load"
+                  , "file":"1"
+                  , "line":"114"
+                  , "order":3
+                  , "details":
+                  {
+                    "Width":"32 bits"
+                    , "Type":"Burst-coalesced"
+                    , "Stall-free":"No"
+                  }
+                }
+              ]
+            }
+            ,
+            {
+              "type":"bb"
+              , "id2":24
+              , "name":"Basic Block 3"
+              , "file":""
+              , "line":"0"
+              , "order":3
+            }
+            ,
+            {
+              "type":"bb"
+              , "id2":25
+              , "name":"Basic Block 4"
+              , "file":""
+              , "line":"0"
+              , "order":4
+              , "children":[
+                {
+                  "type":"inst"
+                  , "id2":31
+                  , "name":"Load"
+                  , "file":"1"
+                  , "line":"127"
+                  , "order":16
+                  , "details":
+                  {
+                    "Width":"32 bits"
+                    , "Type":"Burst-coalesced"
+                    , "Stall-free":"No"
+                  }
+                }
+                ,
+                {
+                  "type":"inst"
+                  , "id2":32
+                  , "name":"Load"
+                  , "file":"1"
+                  , "line":"130"
+                  , "order":179
+                  , "details":
+                  {
+                    "Width":"32 bits"
+                    , "Type":"Burst-coalesced"
+                    , "Stall-free":"No"
+                  }
+                }
+                ,
+                {
+                  "type":"inst"
+                  , "id2":33
+                  , "name":"Load"
+                  , "file":"1"
+                  , "line":"130"
+                  , "order":179
+                  , "details":
+                  {
+                    "Width":"32 bits"
+                    , "Type":"Burst-coalesced"
+                    , "Stall-free":"No"
+                  }
+                }
+              ]
+            }
+            ,
+            {
+              "type":"bb"
+              , "id2":26
+              , "name":"Basic Block 5"
+              , "file":""
+              , "line":"0"
+              , "order":5
+            }
+            ,
+            {
+              "type":"bb"
+              , "id2":27
+              , "name":"Basic Block 6"
+              , "file":""
+              , "line":"0"
+              , "order":6
+              , "children":[
+                {
+                  "type":"inst"
+                  , "id2":34
+                  , "name":"Store"
+                  , "file":"1"
+                  , "line":"138"
+                  , "order":21
+                  , "details":
+                  {
+                    "Width":"32 bits"
+                    , "Type":"Burst-coalesced"
+                    , "Stall-free":"No"
+                  }
+                }
+              ]
+            }
+            ,
+            {
+              "type":"bb"
+              , "id2":28
+              , "name":"Basic Block 7"
+              , "file":""
+              , "line":"0"
+              , "order":7
+            }
+            ,
+            {
+              "type":"bb"
+              , "id2":29
+              , "name":"Basic Block 8"
+              , "file":""
+              , "line":"0"
+              , "order":8
+              , "children":[
+                {
+                  "type":"inst"
+                  , "id2":35
+                  , "name":"Store"
+                  , "file":"1"
+                  , "line":"117"
+                  , "order":1
+                  , "details":
+                  {
+                    "Width":"32 bits"
+                    , "Type":"Burst-coalesced"
+                    , "Stall-free":"No"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+        ,
+        {
+          "type":"container"
+          , "id2":36
+          , "name":""
+          , "file":""
+          , "line":"0"
+          , "order":0
+          , "children":[
+            {
+              "type":"memtype"
+              , "id2":37
+              , "name":"Global Memory"
+              , "file":""
+              , "line":"0"
+              , "order":0
+              , "children":[
+                {
+                  "type":"memsys"
+                  , "id2":38
+                  , "name":""
+                  , "file":""
+                  , "line":"0"
+                  , "order":0
+                  , "children":[
+                    {
+                      "type":"bank"
+                      , "id2":39
+                      , "name":"Bank 0"
+                      , "file":""
+                      , "line":"0"
+                      , "order":0
+                      , "children":[
+                        {
+                          "type":"port"
+                          , "id2":40
+                          , "name":"Port 0"
+                          , "file":""
+                          , "line":"0"
+                          , "order":0
+                          , "edges":[
+                            {
+                              "from":40
+                              , "to":30
+                              , "type":"PORT"
+                            }
+                            ,
+                            {
+                              "from":40
+                              , "to":31
+                              , "type":"PORT"
+                            }
+                            ,
+                            {
+                              "from":40
+                              , "to":33
+                              , "type":"PORT"
+                            }
+                            ,
+                            {
+                              "from":40
+                              , "to":32
+                              , "type":"PORT"
+                            }
+                            ,
+                            {
+                              "from":40
+                              , "to":34
+                              , "type":"PORT"
+                            }
+                            ,
+                            {
+                              "from":40
+                              , "to":35
+                              , "type":"PORT"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                    ,
+                    {
+                      "type":"bank"
+                      , "id2":41
+                      , "name":"Bank 1"
+                      , "file":""
+                      , "line":"0"
+                      , "order":1
+                      , "children":[
+                        {
+                          "type":"port"
+                          , "id2":42
+                          , "name":"Port 0"
+                          , "file":""
+                          , "line":"0"
+                          , "order":0
+                          , "edges":[
+                            {
+                              "from":42
+                              , "to":30
+                              , "type":"PORT"
+                            }
+                            ,
+                            {
+                              "from":42
+                              , "to":31
+                              , "type":"PORT"
+                            }
+                            ,
+                            {
+                              "from":42
+                              , "to":33
+                              , "type":"PORT"
+                            }
+                            ,
+                            {
+                              "from":42
+                              , "to":32
+                              , "type":"PORT"
+                            }
+                            ,
+                            {
+                              "from":42
+                              , "to":34
+                              , "type":"PORT"
+                            }
+                            ,
+                            {
+                              "from":42
+                              , "to":35
+                              , "type":"PORT"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+  , "fileIndexMap":
+  {
+    "/home/as12413/opencl_example/hello_world/device/hello_world.cl":"1"
+  }
+}

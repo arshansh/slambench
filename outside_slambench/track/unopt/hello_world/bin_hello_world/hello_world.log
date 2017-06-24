@@ -1,0 +1,58 @@
+/home/as12413/opencl_example/hello_world/device/hello_world.cl:115:24: warning: declaring kernel argument with no 'restrict' may lead to low kernel performance
+                __global TrackData * output,
+                                     ^
+/home/as12413/opencl_example/hello_world/device/hello_world.cl:117:26: warning: declaring kernel argument with no 'restrict' may lead to low kernel performance
+                __global const float * inVertex,// float3
+                                       ^
+/home/as12413/opencl_example/hello_world/device/hello_world.cl:119:26: warning: declaring kernel argument with no 'restrict' may lead to low kernel performance
+                __global const float * inNormal,// float3
+                                       ^
+/home/as12413/opencl_example/hello_world/device/hello_world.cl:121:26: warning: declaring kernel argument with no 'restrict' may lead to low kernel performance
+                __global const float * refVertex,// float3
+                                       ^
+/home/as12413/opencl_example/hello_world/device/hello_world.cl:123:26: warning: declaring kernel argument with no 'restrict' may lead to low kernel performance
+                __global const float * refNormal,// float3
+                                       ^
+/home/as12413/opencl_example/hello_world/device/hello_world.cl:125:25: warning: declaring kernel argument with no 'restrict' may lead to low kernel performance
+                __global const float* Ttrack_arr,
+                                      ^
+/home/as12413/opencl_example/hello_world/device/hello_world.cl:126:25: warning: declaring kernel argument with no 'restrict' may lead to low kernel performance
+                __global const float* view_arr,
+                                      ^
+aocl-clang: SourceManager.cpp:733: clang::FileID clang::SourceManager::getFileIDLoaded(unsigned int) const: Assertion `SLocOffset >= CurrentLoadedOffset && "Bad function choice"' failed.
+0  libLLVM-3.0.so  0x00007f6ccc35542f
+1  libLLVM-3.0.so  0x00007f6ccc3573a2
+2  libpthread.so.0 0x000000376660f790
+3  libc.so.6       0x0000003766232625 gsignal + 53
+4  libc.so.6       0x0000003766233e05 abort + 373
+5  libc.so.6       0x000000376622b74e
+6  libc.so.6       0x000000376622b810 __assert_perror_fail + 0
+7  aocl-clang      0x000000000103c3d9
+8  aocl-clang      0x000000000103c3f7 clang::SourceManager::getFileIDSlow(unsigned int) const + 23
+9  aocl-clang      0x000000000104054b clang::SourceManager::getPresumedLoc(clang::SourceLocation) const + 651
+10 aocl-clang      0x000000000077fca2 clang::CodeGen::CGDebugInfo::setLocation(clang::SourceLocation) + 114
+11 aocl-clang      0x00000000007819c9 clang::CodeGen::CGDebugInfo::EmitLocation(llvm::IRBuilder<true, llvm::ConstantFolder, llvm::IRBuilderDefaultInserter<true> >&, clang::SourceLocation) + 25
+12 aocl-clang      0x00000000008434b0 clang::CodeGen::CodeGenFunction::EmitStmt(clang::Stmt const*) + 64
+13 aocl-clang      0x0000000000846cf0 clang::CodeGen::CodeGenFunction::EmitCompoundStmt(clang::CompoundStmt const&, bool, clang::CodeGen::AggValueSlot) + 272
+14 aocl-clang      0x0000000000846faf clang::CodeGen::CodeGenFunction::EmitSimpleStmt(clang::Stmt const*) + 271
+15 aocl-clang      0x0000000000843497 clang::CodeGen::CodeGenFunction::EmitStmt(clang::Stmt const*) + 39
+16 aocl-clang      0x000000000085625b clang::CodeGen::CodeGenFunction::GenerateCode(clang::GlobalDecl, llvm::Function*, clang::CodeGen::CGFunctionInfo const&) + 715
+17 aocl-clang      0x0000000000728914 clang::CodeGen::CodeGenModule::EmitGlobalFunctionDefinition(clang::GlobalDecl) + 660
+18 aocl-clang      0x00000000007395ee clang::CodeGen::CodeGenModule::EmitGlobalDefinition(clang::GlobalDecl) + 190
+19 aocl-clang      0x000000000073a6c6 clang::CodeGen::CodeGenModule::EmitDeferred() + 150
+20 aocl-clang      0x000000000073a749 clang::CodeGen::CodeGenModule::Release() + 9
+21 aocl-clang      0x00000000007152ee clang::BackendConsumer::HandleTranslationUnit(clang::ASTContext&) + 110
+22 aocl-clang      0x000000000087646f clang::ParseAST(clang::Sema&, bool) + 431
+23 aocl-clang      0x00000000007145b4 clang::CodeGenAction::ExecuteAction() + 68
+24 aocl-clang      0x00000000005a9055 clang::CompilerInstance::ExecuteAction(clang::FrontendAction&) + 373
+25 aocl-clang      0x000000000058fb29 clang::ExecuteCompilerInvocation(clang::CompilerInstance*) + 1401
+26 aocl-clang      0x0000000000585c7a cc1_main(char const**, char const**, char const*, void*) + 602
+27 aocl-clang      0x000000000058ef1a main + 9226
+28 libc.so.6       0x000000376621ed5d __libc_start_main + 253
+29 aocl-clang      0x0000000000584259
+Stack dump:
+0.	Program arguments: /mnt/applications/altera/15.0/hld/linux64/bin/aocl-clang -cc1 -O3 -emit-llvm-bc -DALTERA_CL -Wuninitialized -triple fpga64 -mllvm -board -mllvm /mnt/applications/altera/15.0/hld/board/nalla_pcie/hardware/p385_hpc_d5/board_spec.xml -DACL_BOARD_p385_hpc_d5=1 -DAOCL_BOARD_p385_hpc_d5=1 /home/as12413/opencl_example/hello_world/device/hello_world.cl -o /home/as12413/opencl_example/hello_world/bin_hello_world/hello_world.pre.bc -g 
+1.	<eof> parser at end of file
+2.	Per-file LLVM IR generation
+3.	<built-in>:4507:66: Generating code for declaration 'vstore3'
+4.	<built-in>:4507:120: LLVM IR generation of compound statement ('{}')

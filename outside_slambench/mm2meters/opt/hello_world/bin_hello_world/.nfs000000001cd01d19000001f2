@@ -1,0 +1,30 @@
+/home/as12413/opencl_example/hello_world/device/hello_world.cl:38:20: warning: declaring kernel argument with no 'restrict' may lead to low kernel performance
+                __global float * depth,
+                                 ^
+/home/as12413/opencl_example/hello_world/device/hello_world.cl:41:27: warning: declaring kernel argument with no 'restrict' may lead to low kernel performance
+                const __global ushort * in ,
+                                        ^
+2 warnings generated.
+Warning: Unused kernel argument 'depthSize_y'
+Warning: Unused kernel argument 'inSize_y'
+========================================================================================================================
+|                                           *** Optimization Report ***                                                |
+Kernel throughput analysis for              : AOCmm2metersKernel
+ .. simd work items                         : 8
+ .. compute units                           : 1
+ .. throughput due to control flow analysis : 1920.00 M work items/second
+ .. kernel global memory bandwidth analysis : 13241.38 MB/second
+ .. kernel number of local memory banks     : none 
+
++--------------------------------------------------------------------+
+; Estimated Resource Usage Summary                                   ;
++----------------------------------------+---------------------------+
+; Resource                               + Usage                     ;
++----------------------------------------+---------------------------+
+; Logic utilization                      ;   32%                     ;
+; Dedicated logic registers              ;   14%                     ;
+; Memory blocks                          ;   28%                     ;
+; DSP blocks                             ;    4%                     ;
++----------------------------------------+---------------------------;
+System name: hello_world
+

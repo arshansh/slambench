@@ -1,0 +1,7 @@
+/home/as12413/opencl_example/hello_world/device/hello_world.cl:46:20: warning: declaring kernel argument with no 'restrict' may lead to low kernel performance
+                __global float * out,
+                                 ^
+/home/as12413/opencl_example/hello_world/device/hello_world.cl:47:30: warning: declaring kernel argument with no 'restrict' may lead to low kernel performance
+                __global const TrackData * J,
+                                           ^
+2 warnings generated.

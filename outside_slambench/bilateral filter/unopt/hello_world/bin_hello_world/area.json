@@ -1,0 +1,635 @@
+{
+  "kernels":
+  [
+    {
+      "name":"AOCbilateralFilterkernel"
+      , "bbtables":
+      [
+        {
+          "header":
+          [
+            {
+              "data":
+              [
+                {
+                  "value":"AOCbilateralFilterkernel.wii_blk"
+                  , "colspan":2
+                }
+                , {
+                  "value":"Resources"
+                  , "colspan":4
+                }
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"Operations"
+                  , "colspan":2
+                }
+                , "LEs"
+                , "FFs"
+                , "RAMs"
+                , "DSPs"
+              ]
+            }
+          ]
+          , "body":
+          [
+            {
+              "data":
+              [
+                {
+                  "value":"hello_world.cl:111"
+                  , "file":1
+                  , "line":111
+                  , "colspan":2
+                }
+                , "16"
+                , "0"
+                , "0"
+                , "0"
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"hello_world.cl:113"
+                  , "file":1
+                  , "line":113
+                  , "colspan":2
+                }
+                , "0"
+                , "0"
+                , "0"
+                , "0"
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"hello_world.cl:113"
+                  , "file":1
+                  , "line":113
+                  , "colspan":2
+                }
+                , "0"
+                , "0"
+                , "0"
+                , "0"
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"hello_world.cl:117"
+                  , "file":1
+                  , "line":117
+                  , "colspan":2
+                }
+                , "146"
+                , "290"
+                , "0"
+                , "1"
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"Unknown Line"
+                  , "file":0
+                  , "line":0
+                  , "colspan":2
+                }
+                , "107"
+                , "78"
+                , "0"
+                , "0"
+              ]
+            }
+          ]
+        }
+        , {
+          "header":
+          [
+            {
+              "data":
+              [
+                {
+                  "value":"entry"
+                  , "colspan":2
+                }
+                , {
+                  "value":"Resources"
+                  , "colspan":4
+                }
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"Operations"
+                  , "colspan":2
+                }
+                , "LEs"
+                , "FFs"
+                , "RAMs"
+                , "DSPs"
+              ]
+            }
+          ]
+          , "body":
+          [
+            {
+              "data":
+              [
+                {
+                  "value":"hello_world.cl:101"
+                  , "file":1
+                  , "line":101
+                  , "colspan":2
+                }
+                , "55"
+                , "375"
+                , "0"
+                , "2"
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"hello_world.cl:103"
+                  , "file":1
+                  , "line":103
+                  , "colspan":2
+                }
+                , "17"
+                , "17"
+                , "0"
+                , "0"
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"Unknown Line"
+                  , "file":0
+                  , "line":0
+                  , "colspan":2
+                }
+                , "124"
+                , "537"
+                , "2"
+                , "0"
+              ]
+            }
+          ]
+        }
+        , {
+          "header":
+          [
+            {
+              "data":
+              [
+                {
+                  "value":"for.body22.lr.ph"
+                  , "colspan":2
+                }
+                , {
+                  "value":"Resources"
+                  , "colspan":4
+                }
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"Operations"
+                  , "colspan":2
+                }
+                , "LEs"
+                , "FFs"
+                , "RAMs"
+                , "DSPs"
+              ]
+            }
+          ]
+          , "body":
+          [
+            {
+              "data":
+              [
+                {
+                  "value":"hello_world.cl:112"
+                  , "file":1
+                  , "line":112
+                  , "colspan":2
+                }
+                , "8"
+                , "420"
+                , "0"
+                , "0"
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"hello_world.cl:113"
+                  , "file":1
+                  , "line":113
+                  , "colspan":2
+                }
+                , "40"
+                , "104"
+                , "0"
+                , "0"
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"hello_world.cl:117"
+                  , "file":1
+                  , "line":117
+                  , "colspan":2
+                }
+                , "40"
+                , "133"
+                , "0"
+                , "0"
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"Unknown Line"
+                  , "file":0
+                  , "line":0
+                  , "colspan":2
+                }
+                , "0"
+                , "0"
+                , "0"
+                , "0"
+              ]
+            }
+          ]
+        }
+        , {
+          "header":
+          [
+            {
+              "data":
+              [
+                {
+                  "value":"for.body22"
+                  , "colspan":2
+                }
+                , {
+                  "value":"Resources"
+                  , "colspan":4
+                }
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"Operations"
+                  , "colspan":2
+                }
+                , "LEs"
+                , "FFs"
+                , "RAMs"
+                , "DSPs"
+              ]
+            }
+          ]
+          , "body":
+          [
+            {
+              "data":
+              [
+                {
+                  "value":"hello_world.cl:112"
+                  , "file":1
+                  , "line":112
+                  , "colspan":2
+                }
+                , "199"
+                , "1106"
+                , "7"
+                , "0"
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"hello_world.cl:113"
+                  , "file":1
+                  , "line":113
+                  , "colspan":2
+                }
+                , "40"
+                , "104"
+                , "0"
+                , "0"
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"hello_world.cl:114"
+                  , "file":1
+                  , "line":114
+                  , "colspan":2
+                }
+                , "3105"
+                , "4804"
+                , "43"
+                , "2"
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"hello_world.cl:115"
+                  , "file":1
+                  , "line":115
+                  , "colspan":2
+                }
+                , "70"
+                , "35"
+                , "0"
+                , "0"
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"hello_world.cl:116"
+                  , "file":1
+                  , "line":116
+                  , "colspan":2
+                }
+                , "346"
+                , "439"
+                , "0"
+                , "0"
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"hello_world.cl:117"
+                  , "file":1
+                  , "line":117
+                  , "colspan":2
+                }
+                , "953"
+                , "1266"
+                , "12"
+                , "15"
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"hello_world.cl:117"
+                  , "file":1
+                  , "line":117
+                  , "colspan":2
+                }
+                , "6353"
+                , "9440"
+                , "90"
+                , "1"
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"hello_world.cl:118"
+                  , "file":1
+                  , "line":118
+                  , "colspan":2
+                }
+                , "662"
+                , "1019"
+                , "4"
+                , "1"
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"hello_world.cl:119"
+                  , "file":1
+                  , "line":119
+                  , "colspan":2
+                }
+                , "463"
+                , "645"
+                , "3"
+                , "0"
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"hello_world.cl:87"
+                  , "file":1
+                  , "line":87
+                  , "colspan":2
+                }
+                , "120"
+                , "251"
+                , "0"
+                , "1"
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"Unknown Line"
+                  , "file":0
+                  , "line":0
+                  , "colspan":2
+                }
+                , "583"
+                , "1537"
+                , "16"
+                , "0"
+              ]
+            }
+          ]
+        }
+        , {
+          "header":
+          [
+            {
+              "data":
+              [
+                {
+                  "value":"for.inc57"
+                  , "colspan":2
+                }
+                , {
+                  "value":"Resources"
+                  , "colspan":4
+                }
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"Operations"
+                  , "colspan":2
+                }
+                , "LEs"
+                , "FFs"
+                , "RAMs"
+                , "DSPs"
+              ]
+            }
+          ]
+          , "body":
+          [
+            {
+              "data":
+              [
+                {
+                  "value":"hello_world.cl:111"
+                  , "file":1
+                  , "line":111
+                  , "colspan":2
+                }
+                , "34"
+                , "444"
+                , "0"
+                , "0"
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"Unknown Line"
+                  , "file":0
+                  , "line":0
+                  , "colspan":2
+                }
+                , "8"
+                , "121"
+                , "0"
+                , "0"
+              ]
+            }
+          ]
+        }
+        , {
+          "header":
+          [
+            {
+              "data":
+              [
+                {
+                  "value":"for.end59.loopexit.loopexit"
+                  , "colspan":2
+                }
+                , {
+                  "value":"Resources"
+                  , "colspan":4
+                }
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"Operations"
+                  , "colspan":2
+                }
+                , "LEs"
+                , "FFs"
+                , "RAMs"
+                , "DSPs"
+              ]
+            }
+          ]
+          , "body":
+          [
+            {
+              "data":
+              [
+                {
+                  "value":"hello_world.cl:104"
+                  , "file":1
+                  , "line":104
+                  , "colspan":2
+                }
+                , "415"
+                , "2493"
+                , "16"
+                , "0"
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"hello_world.cl:125"
+                  , "file":1
+                  , "line":125
+                  , "colspan":2
+                }
+                , "199"
+                , "418"
+                , "6"
+                , "5"
+              ]
+            }
+            , {
+              "data":
+              [
+                {
+                  "value":"Unknown Line"
+                  , "file":0
+                  , "line":0
+                  , "colspan":2
+                }
+                , "267"
+                , "606"
+                , "3"
+                , "0"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
