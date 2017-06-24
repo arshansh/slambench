@@ -18,3 +18,5 @@ What each folder contains:
 5)slambench: This is a very IMPORTANT folder. For future work on SLAMBench FPGAs, this folder is tuned and ready to run OpenCL on FPGA. All that needs to be done, it pasting the ".aocx" file in kfusion/build once the application is built. The compiled kernel name should also be added to the host.
 
 6)single kernels: This folder contains for every single kernel, the GPU OpenCL, CPU C++, FPGA unoptimized and FPGA optimized implmentation.
+
+7)kernels_outside_slambench:
