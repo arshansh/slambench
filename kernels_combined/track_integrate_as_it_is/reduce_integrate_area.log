@@ -1,0 +1,41 @@
+Compiler Warning: Kernel 'AOCreduceKernel': limiting to 2 concurrent work-groups because threads might reach barrier out-of-order.
+========================================================================================================================
+|                                           *** Optimization Report ***                                                |
+Kernel throughput analysis for              : AOCintegrateKernel
+ .. simd work items                         : 1
+ .. compute units                           : 4
+ .. throughput due to control flow analysis : 0.94 M work items/second
+ .. kernel global memory bandwidth analysis : 13379.31 MB/second
+ .. kernel number of local memory banks     : none 
+Kernel throughput analysis for              : AOCreduceKernel
+ .. simd work items                         : 1
+ .. compute units                           : 2
+ .. throughput due to control flow analysis : 0.46 K work items/second
+ .. kernel global memory bandwidth analysis : 17655.17 MB/second
+ .. kernel number of local memory banks     : 2  
+ .. # of RAMs (local mem) / compute unit    : 64 
+ .. kernel number of local memory masters   : 5 
+ .. kernel local avg port fanin             : 1.0 
+ .... reducing fmax because of connectivity : 166.9 MHz
+ .... local stalls derate throughput by     : 1.00 for [ AOCreduceKernel.wii_blk ]
+ .... local stalls derate throughput by     : 1.00 for [ entry ]
+ .... local stalls derate throughput by     : 1.00 for [ for.cond14.preheader ]
+ .... local stalls derate throughput by     : 1.00 for [ for.cond219.preheader.loopexit.loopexit ]
+ .... local stalls derate throughput by     : 1.00 for [ for.body17 ]
+ .... local stalls derate throughput by     : 1.00 for [ for.inc215.loopexit ]
+ .... local stalls derate throughput by     : 1.00 for [ for.body241 ]
+ .... local stalls derate throughput by     : 1.00 for [ for.end251.loopexit ]
+ ........ because of local stalls throughput: 0.32 K work items/second
+
++--------------------------------------------------------------------+
+; Estimated Resource Usage Summary                                   ;
++----------------------------------------+---------------------------+
+; Resource                               + Usage                     ;
++----------------------------------------+---------------------------+
+; Logic utilization                      ;  129%                     ;
+; Dedicated logic registers              ;   62%                     ;
+; Memory blocks                          ;   64%                     ;
+; DSP blocks                             ;   23%                     ;
++----------------------------------------+---------------------------;
+System name: hello_world
+
