@@ -19,4 +19,4 @@ What each folder contains:
 
 6)single kernels: This folder contains for every single kernel, the GPU OpenCL, CPU C++, FPGA unoptimized and FPGA optimized implmentation.
 
-7)kernels_outside_slambench:
+7)outside_slambench: this folder contains all the work done for implementing SLAMBench for FPGAs (by reading I/O text files from SLAMBench) for every single kernel
