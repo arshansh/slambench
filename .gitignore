@@ -1,0 +1,14 @@
+hello_world/
+*.aocx
+hello_world
+bin_hello_world
+TooN/
+build/
+living_room_traj2_loop.raw
+living_room_traj2_loop
+actual
+estimation
+hardware
+temp
+temp_hello_world
+wrong
