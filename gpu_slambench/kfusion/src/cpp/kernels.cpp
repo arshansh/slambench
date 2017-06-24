@@ -6,45 +6,19 @@
  This code is licensed under the MIT License.
 
  */
+ 
+ 
+ #include <iostream>
+#include <chrono>
+
+
+ 
+ 
 #include <kernels.h>
-
-
-
-#include "common_opencl.h"
-
-
-#include <TooN/TooN.h>
-#include <TooN/se3.h>
-#include <TooN/GR_SVD.h>
 
 #ifdef __APPLE__
 #include <mach/clock.h>
 #include <mach/mach.h>
-
-
-
-
-
-
-
-//////////////////////////////////////////////
-
-#include <stdlib.h>
-#include <sys/types.h>
-#include <dlfcn.h>
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <stdexcept>
-#include <vector>
-
-#include "CL/opencl.h"
-
-
-
-///////////////////////////////////////////////
-
-	
 
 	
 	#define TICK()    {if (print_kernel_timing) {\
@@ -82,74 +56,11 @@ float3 * normal;
 TrackData * trackingResult;
 float* reductionoutput;
 float ** ScaledDepth;
-
 float * floatDepth;
-
-
 Matrix4 oldPose;
 Matrix4 raycastPose;
 float3 ** inputVertex;
 float3 ** inputNormal;
-
-
-
-//need to add these for the new kernel
-uint2 computationSizeBkp = make_uint2(0, 0);
-
-cl_mem ocl_depth_buffer = NULL;
-cl_mem ocl_FloatDepth = NULL;
-
-cl_mem * ocl_ScaledDepth = NULL;
-cl_mem ocl_gaussian = NULL;
-size_t gaussianS;
-
-cl_mem * ocl_inputVertex = NULL;
-cl_mem * ocl_inputNormal = NULL;
-cl_mem ocl_normal = NULL;
-cl_mem ocl_vertex = NULL;
-cl_mem ocl_trackingResult = NULL;
-
-cl_kernel kernel_1;
-cl_kernel kernel_2;
-cl_kernel kernel_3;
-cl_kernel kernel_4;
-
-int bool_frame=0;
-/////////
-
-///////////////////////////////////////////  timing
-
-void  checkError(cl_int err,std::string str) {
-
-	if (err != CL_SUCCESS)  {
-	std::cout << str << std::endl; exit(err);
-	}
-}
-
-unsigned long int computeEventDuration(cl_event* event) {
-	if (event == NULL)
-		throw std::runtime_error(
-				"Error computing event duration. \
-                              Event is not initialized");
-	cl_int errorCode;
-	cl_ulong start, end;
-	errorCode = clGetEventProfilingInfo(*event, CL_PROFILING_COMMAND_START,
-			sizeof(cl_ulong), &start, NULL);
-	checkError(errorCode, "Error querying the event start time");
-	errorCode = clGetEventProfilingInfo(*event, CL_PROFILING_COMMAND_END,
-			sizeof(cl_ulong), &end, NULL);
-	checkError(errorCode, "Error querying the event end time");
-	return static_cast<unsigned long>(end - start);
-}
-
-
-
-cl_event write_event[10];
-cl_event kernel_event[10];
-cl_event finish_event[10];
-
-
-//////////////////////////////////////////
 
 bool print_kernel_timing = false;
 #ifdef __APPLE__
@@ -163,29 +74,6 @@ bool print_kernel_timing = false;
 	
 void Kfusion::languageSpecificConstructor() {
 
-
-	init();
- 
- 	// Create the kernel - name passed in here must match kernel name in the
-	// original CL file, that was compiled into an AOCX file using the AOC tool
-	const char *kernel_name = "AOChalfSampleRobustImageKernel";  // Kernel name, as defined in the CL file
-	kernel_1 = clCreateKernel(program, kernel_name, &clError);
-	checkErr(clError, "Failed to create kernel");
- 
- 	kernel_name = "AOCdepth2vertexKernel";  // Kernel name, as defined in the CL file
-	kernel_2 = clCreateKernel(program, kernel_name, &clError);
-	checkErr(clError, "Failed to create kernel");
- 
- 
-	kernel_name = "AOCvertex2normalKernel";  // Kernel name, as defined in the CL file
-	kernel_3 = clCreateKernel(program, kernel_name, &clError);
-	checkErr(clError, "Failed to create kernel");
- 
- 	kernel_name = "AOCtrackKernel";  // Kernel name, as defined in the CL file
-	kernel_4 = clCreateKernel(program, kernel_name, &clError);
-	checkErr(clError, "Failed to create kernel");
- 
-
 	if (getenv("KERNEL_TIMINGS"))
 		print_kernel_timing = true;
 
@@ -193,74 +81,13 @@ void Kfusion::languageSpecificConstructor() {
 	reductionoutput = (float*) calloc(sizeof(float) * 8 * 32, 1);
 
 	ScaledDepth = (float**) calloc(sizeof(float*) * iterations.size(), 1);
- 	//ScaledDepth = (float **)alignedMalloc(sizeof(float*) * iterations.size());
-   
 	inputVertex = (float3**) calloc(sizeof(float3*) * iterations.size(), 1);
 	inputNormal = (float3**) calloc(sizeof(float3*) * iterations.size(), 1);
 
- 
-	ocl_normal = clCreateBuffer(context, CL_MEM_READ_WRITE,
-			sizeof(float3) * computationSize.x * computationSize.y, NULL,
-			&clError);
-		checkErr(clError, "clCreateBuffer");
-   
-   	ocl_vertex = clCreateBuffer(context, CL_MEM_READ_WRITE,
-			sizeof(float3) * computationSize.x * computationSize.y, NULL,
-			&clError);
-		checkErr(clError, "clCreateBuffer");
-
-
-	ocl_trackingResult = clCreateBuffer(context, CL_MEM_READ_WRITE,
-			sizeof(TrackData) * computationSize.x * computationSize.y, NULL,
-			&clError);
-		checkErr(clError, "clCreateBuffer");
-   
-   
-////////////////////
-	ocl_FloatDepth = clCreateBuffer(context, CL_MEM_READ_WRITE,
-			sizeof(float) * computationSize.x * computationSize.y, NULL,
-			&clError);
-	checkErr(clError, "clCreateBuffer");
-
-	//ocl scaled_depth decleration
-	ocl_ScaledDepth = (cl_mem*) malloc(sizeof(cl_mem) * iterations.size());
-  
-  	//ocl_inputVertex decleration
-	ocl_inputVertex = (cl_mem*) malloc(sizeof(cl_mem) * iterations.size());
-  
-    //ocl input normal decleration  
-	ocl_inputNormal = (cl_mem*) malloc(sizeof(cl_mem) * iterations.size());  
-//////////////////////
-
-
-
 	for (unsigned int i = 0; i < iterations.size(); ++i) {
- 
- //ocl scaled depth
- 	  ocl_ScaledDepth[i] = clCreateBuffer(context, CL_MEM_READ_WRITE,
+		ScaledDepth[i] = (float*) calloc(
 				sizeof(float) * (computationSize.x * computationSize.y)
-					/ (int) pow(2, i), NULL, &clError);
-		checkErr(clError, "clCreateBuffer");
-   
-		//ScaledDepth[i] = (float*) calloc(
-		//		sizeof(float) * (computationSize.x * computationSize.y)
-		//				/ (int) pow(2, i), 1);
-   	ScaledDepth[i]= (float *)alignedMalloc(				sizeof(float) * (computationSize.x * computationSize.y) / (int) pow(2, i));
-                    
-                        
- //ocl input vertex decleration                                                           
-		ocl_inputVertex[i] = clCreateBuffer(context, CL_MEM_READ_WRITE,
-			sizeof(float3) * (computationSize.x * computationSize.y)
-					/ (int) pow(2, i), NULL, &clError);
-     checkErr(clError, "clCreateBuffer");
-                     
-                     
-     //ocl input normal decleration                
-    ocl_inputNormal[i] = clCreateBuffer(context, CL_MEM_READ_WRITE,
-    sizeof(float3) * (computationSize.x * computationSize.y)
-    / (int) pow(2, i), NULL, &clError);
-    checkErr(clError, "clCreateBuffer");                
-                                                                                                    
+						/ (int) pow(2, i), 1);
 		inputVertex[i] = (float3*) calloc(
 				sizeof(float3) * (computationSize.x * computationSize.y)
 						/ (int) pow(2, i), 1);
@@ -269,21 +96,8 @@ void Kfusion::languageSpecificConstructor() {
 						/ (int) pow(2, i), 1);
 	}
 
-
-
-
-///////////////////////
-
-
-	//float depth decleration alligend
-	floatDepth = (float *)alignedMalloc(computationSize.x * computationSize.y * sizeof(float));
-
-
-
-//////////////////////
-
-
-
+	floatDepth = (float*) calloc(
+			sizeof(float) * computationSize.x * computationSize.y, 1);
 	vertex = (float3*) calloc(
 			sizeof(float3) * computationSize.x * computationSize.y, 1);
 	normal = (float3*) calloc(
@@ -292,108 +106,30 @@ void Kfusion::languageSpecificConstructor() {
 			sizeof(TrackData) * computationSize.x * computationSize.y, 1);
 
 	// ********* BEGIN : Generate the gaussian *************
-	gaussianS = radius * 2 + 1;
+	size_t gaussianS = radius * 2 + 1;
 	gaussian = (float*) calloc(gaussianS * sizeof(float), 1);
- 	//gaussian = (float *)alignedMalloc(gaussianS * sizeof(float));
-  
-        
 	int x;
 	for (unsigned int i = 0; i < gaussianS; i++) {
 		x = i - 2;
 		gaussian[i] = expf(-(x * x) / (2 * delta * delta));
 	}
- 
- 	//ocl_gausian decleration
-	ocl_gaussian = clCreateBuffer(context, CL_MEM_READ_ONLY,
-			gaussianS * sizeof(float), NULL, &clError);
-		checkErr(clError, "clCreateBuffer");
 	// ********* END : Generate the gaussian *************
 
 	volume.init(volumeResolution, volumeDimensions);
 	reset();
-
-
-
 }
 
 Kfusion::~Kfusion() {
 
-	
-/////////////////////////////////////////////////////////////////
 	free(floatDepth);
-
-	//could be used instead but with malloc allocation in constructor
-	//if (floatDepth)
-	//	free(floatDepth);
-	//floatDepth = NULL;
-/////////////////////////////////////////////////////////////////
 	free(trackingResult);
 
 	free(reductionoutput);
 	for (unsigned int i = 0; i < iterations.size(); ++i) {
- 
- 		if (ocl_ScaledDepth[i]) {
-		clError = clReleaseMemObject(ocl_ScaledDepth[i]);
-		checkErr(clError, "clReleaseMem");
-		ocl_ScaledDepth[i] = NULL;
-   
-   
-   	  if (ocl_inputVertex[i]) {
-	    clError = clReleaseMemObject(ocl_inputVertex[i]);
-	    checkErr(clError, "clReleaseMem");
-	    ocl_inputVertex[i] = NULL;
-	  }
-     
-     
- 	  if (ocl_inputNormal[i]) {
-	    clError = clReleaseMemObject(ocl_inputNormal[i]);
-	    checkErr(clError, "clReleaseMem");
-		ocl_inputNormal[i] = NULL;
-	  }
-     
-     
-	 }
-
- 
 		free(ScaledDepth[i]);
 		free(inputVertex[i]);
 		free(inputNormal[i]);
 	}
- 
- 
- 	if (ocl_ScaledDepth) {
-		free(ocl_ScaledDepth);
-	ocl_ScaledDepth = NULL;
-	}
- 
-  	  
- if (ocl_trackingResult) {
-	 clError = 	clReleaseMemObject(ocl_trackingResult);
-		checkErr(clError, "clReleaseMem");
-	ocl_trackingResult = NULL;
-	}
-  
-	if (ocl_inputVertex) {
-		free(ocl_inputVertex);
-	ocl_inputVertex = NULL;
-	}
- 
-  	if (ocl_inputNormal) {
-		free(ocl_inputNormal);
-	ocl_inputNormal = NULL;
-	}
- 
-  	if (ocl_normal) {
-  clError = clReleaseMemObject(ocl_normal);
-  checkErr(clError, "clReleaseMem");
-  ocl_normal = NULL;
-	}
- 	if (ocl_vertex) {
-	 clError = 	clReleaseMemObject(ocl_vertex);
-		checkErr(clError, "clReleaseMem");
-	ocl_vertex = NULL;
-	}
- 
 	free(ScaledDepth);
 	free(inputVertex);
 	free(inputNormal);
@@ -403,44 +139,15 @@ Kfusion::~Kfusion() {
 	free(gaussian);
 
 	volume.release();
-
-
-
-
-///////need to add these for the new kernel
-	if (ocl_FloatDepth)
-		clReleaseMemObject(ocl_FloatDepth);
-	ocl_FloatDepth = NULL;
-
-
-	if (ocl_depth_buffer)
-		clReleaseMemObject(ocl_depth_buffer);
-	ocl_depth_buffer = NULL;
-
-	RELEASE_KERNEL(kernel_1);
- RELEASE_KERNEL(kernel_2);
- RELEASE_KERNEL(kernel_3);
- RELEASE_KERNEL(kernel_4);
-	computationSizeBkp = make_uint2(0, 0);
-	clean();
-///////////////////
-
 }
 void Kfusion::reset() {
 	initVolumeKernel(volume);
 }
 void init() {
-/////////////
-opencl_init();
-/////////////
-
 }
 ;
 // stub
 void clean() {
-///////////
-	opencl_clean();
-////////////
 }
 ;
 // stub
@@ -862,6 +569,10 @@ void trackKernel(TrackData* output, const float3* inVertex,
 
 void mm2metersKernel(float * out, uint2 outSize, const ushort * in,
 		uint2 inSize) {
+   
+
+
+
 	TICK();
 	// Check for unsupported conditions
 	if ((inSize.x < outSize.x) || (inSize.y < outSize.y)) {
@@ -887,6 +598,8 @@ void mm2metersKernel(float * out, uint2 outSize, const ushort * in,
 					/ 1000.0f;
 		}
 	TOCK("mm2metersKernel", outSize.x * outSize.y);
+ 
+
 }
 
 void halfSampleRobustImageKernel(float* out, const float* in, uint2 inSize,
@@ -1213,174 +926,22 @@ void renderVolumeKernel(uchar4* out, const uint2 depthSize, const Volume volume,
 	TOCK("renderVolumeKernel", depthSize.x * depthSize.y);
 }
 
-bool Kfusion::preprocessing(const ushort * inputDepth, const uint2 inSize,uint frame) {
-
-	mm2metersKernel(floatDepth, computationSize, inputDepth, inSize);
-/*
-
-	TICK();
-
-	
-
-	// bilateral_filter(ScaledDepth[0], inputDepth, inputSize , gaussian, e_delta, radius);
-
-
-///mm2meters kernel
-	uint2 outSize = computationSize;
-
-	// Check for unsupported conditions
-	if ((inSize.x < outSize.x) || (inSize.y < outSize.y)) {
-		std::cerr << "Invalid ratio." << std::endl;
-		exit(1);
-	}
-	if ((inSize.x % outSize.x != 0) || (inSize.y % outSize.y != 0)) {
-		std::cerr << "Invalid ratio." << std::endl;
-		exit(1);
-	}
-	if ((inSize.x / outSize.x != inSize.y / outSize.y)) {
-		std::cerr << "Invalid ratio." << std::endl;
-		exit(1);
-	}
-
-	int ratio = inSize.x / outSize.x;
-
-	if (computationSizeBkp.x < inSize.x|| computationSizeBkp.y < inSize.y || ocl_depth_buffer == NULL) {
-		computationSizeBkp = make_uint2(inSize.x, inSize.y);
-		if (ocl_depth_buffer != NULL) {
-			clError = clReleaseMemObject(ocl_depth_buffer);
-			checkErr(clError, "clReleaseMemObject");
-		}
-		ocl_depth_buffer = clCreateBuffer(context, CL_MEM_READ_WRITE,
-				inSize.x * inSize.y * sizeof(uint16_t), NULL, &clError);
-		checkErr(clError, "clCreateBuffer input");
-	}
-	clError = clEnqueueWriteBuffer(queue, ocl_depth_buffer, CL_FALSE, 0,
-			inSize.x * inSize.y * sizeof(uint16_t), inputDepth, 0, NULL, &write_event[0]);
-	checkErr(clError, "clEnqueueWriteBuffer");
-
-	int arg = 0;
-	clError = clSetKernelArg(mm2meters_ocl_kernel, arg++, sizeof(cl_mem),
-			&ocl_FloatDepth);
-	checkErr(clError, "clSetKernelArg");
-	clError = clSetKernelArg(mm2meters_ocl_kernel, arg++, sizeof(cl_uint),
-			&outSize.x);
-	checkErr(clError, "clSetKernelArg");
- 	clError = clSetKernelArg(mm2meters_ocl_kernel, arg++, sizeof(cl_uint),
-			&outSize.y);
-	checkErr(clError, "clSetKernelArg");
-	clError = clSetKernelArg(mm2meters_ocl_kernel, arg++, sizeof(cl_mem),
-			&ocl_depth_buffer);
-	checkErr(clError, "clSetKernelArg");
-	clError = clSetKernelArg(mm2meters_ocl_kernel, arg++, sizeof(cl_uint),
-			&inSize.x);
-	checkErr(clError, "clSetKernelArg");
-	clError = clSetKernelArg(mm2meters_ocl_kernel, arg++, sizeof(cl_int),
-			&ratio);
-	checkErr(clError, "clSetKernelArg");
-
-	size_t globalWorksize[2] = { outSize.x, outSize.y };
-
-	clError = clEnqueueNDRangeKernel(queue, mm2meters_ocl_kernel, 2,
-			NULL, globalWorksize, NULL, 0, &write_event[0], &kernel_event[0]);
-	checkErr(clError, "clEnqueueNDRangeKernel");
-
-
-
-	//This is done so that floatDepth=ocl_FloatDepth,because they are essentially the same thing and floatDepth get reads in renderDepth function, and next kernel(bilateral filter) , and integrateKernel
-
-	clError = clEnqueueReadBuffer(queue,ocl_FloatDepth, CL_FALSE, 0,outSize.x * outSize.y * sizeof(float), floatDepth, 0,&kernel_event[0], &finish_event[0]);
-	checkErr(clError, "clEnqueueReadBuffer");
-
-	TOCK("mm2metersKernel", outSize.x * outSize.y);
-
-////end of mm2meters kernels
-	//timings
-	
-
-	write_vector.push_back( computeEventDuration(&write_event[0]) );
-	kernel_vector.push_back(computeEventDuration(&kernel_event[0]) );
-	read_vector.push_back ( computeEventDuration(&finish_event[0]) );
-
-	//std::cerr << "Write to kernel time:" << computeEventDuration(&write_event[0]) << std::endl;
-	//std::cerr << "Kernel time:" << computeEventDuration(&kernel_event[0]) << std::endl;
-	//std::cerr << "Write to host time:" << computeEventDuration(&finish_event[0]) << std::endl;
-
-*/
-
-/*
-	TICK();
+bool Kfusion::preprocessing(const ushort * inputDepth, const uint2 inputSize,uint frame) {
 
    
-	int arg = 0;
-  float mult_result=2*e_delta*e_delta; 
-     
-	uint2 outSize = computationSize;
-	size_t globalWorksize[2] = { outSize.x, outSize.y };
-	
-
-	//data write from host to kernel memory
-
-	clError = clEnqueueWriteBuffer(queue, ocl_gaussian, CL_TRUE, 0,
-			gaussianS * sizeof(float), gaussian, 0, NULL, NULL);
-		checkErr(clError, "clEnqueueWrite");
-	free(gaussian);
- 
- 
-	//reading data to the kernel memory from host
-	clError = clEnqueueWriteBuffer(queue,ocl_FloatDepth, CL_FALSE, 0,outSize.x * outSize.y * sizeof(float), floatDepth, 0,NULL, &write_event[0]);
-	checkErr(clError, "clEnqueueWriteBuffer");
-
-	//clError = clEnqueueWriteBuffer(commandQueue,ocl_ScaledDepth[0], CL_TRUE, 0,outSize.x * outSize.y * sizeof(float), ScaledDepth[0], 0,NULL, NULL);
-	//checkErr(clError, "clEnqueueWriteBuffer");
 
 
-	//setting arguments
-	clError = clSetKernelArg(kernel, arg++, sizeof(cl_mem),
-			&ocl_ScaledDepth[0]);
-	checkErr(clError, "clSetKernelArg");
-	clError = clSetKernelArg(kernel, arg++, sizeof(cl_mem),
-			&ocl_FloatDepth);
-	checkErr(clError, "clSetKernelArg");
-	clError = clSetKernelArg(kernel, arg++,
-			sizeof(cl_float), &mult_result);
-	checkErr(clError, "clSetKernelArg");
-	clError = clSetKernelArg(kernel, arg++, sizeof(cl_int),
-			&radius);
-	checkErr(clError, "clSetKernelArg");
-	//std::cout<<radius<<std::endl;
- 	clError = clSetKernelArg(kernel, arg++, sizeof(cl_uint2),
-			&outSize);
-	checkErr(clError, "clSetKernelArg");
+ 	mm2metersKernel(floatDepth, computationSize, inputDepth, inputSize);
+
+
+   
+
 
  
- 
- 
-	clError = clEnqueueTask(queue, kernel, 1, &write_event[0], &kernel_event[0]);
-	checkErr(clError, "clEnqueueNDRangeKernel");
 
-	//read data back from kernel scaled_depth=ocl_scaled_depth
-	clError = clEnqueueReadBuffer(queue,ocl_ScaledDepth[0], CL_TRUE, 0,outSize.x * outSize.y * sizeof(float), ScaledDepth[0], 1,&kernel_event[0], &finish_event[0]);
-	checkErr(clError, "clEnqueueReadBuffer");
-
-
-	TOCK("bilateralfilterkernel", outSize.x * outSize.y);
-
-//////end of bilateral filter kernel	
-
-	//timings
-	
-
-	write_vector.push_back( computeEventDuration(&write_event[0]) );
-	kernel_vector.push_back(computeEventDuration(&kernel_event[0]) );
-	read_vector.push_back ( computeEventDuration(&finish_event[0]) );
-
-	//std::cerr << "Write to kernel time:" << computeEventDuration(&write_event[0]) << std::endl;
-	std::cerr << "Kernel time:" << computeEventDuration(&kernel_event[0]) << std::endl;
-	//std::cerr << "Write to host time:" << computeEventDuration(&finish_event[0]) << std::endl;
-*/
-
-
-	bilateralFilterKernel(ScaledDepth[0], floatDepth, computationSize, gaussian,e_delta, radius);
+	bilateralFilterKernel(ScaledDepth[0], floatDepth, computationSize, gaussian,
+			e_delta, radius);
+      
 
 	return true;
 }
@@ -1391,282 +952,44 @@ bool Kfusion::tracking(float4 k, float icp_threshold, uint tracking_rate,
 	if (frame % tracking_rate != 0)
 		return false;
 
-/*
-  //C++ version of half sample
 	// half sample the input depth maps into the pyramid levels
 	for (unsigned int i = 1; i < iterations.size(); ++i) {
-		halfSampleRobustImageKernel(ScaledDepth[i], ScaledDepth[i - 1],
-				make_uint2(computationSize.x / (int) pow(2, i - 1),
-						computationSize.y / (int) pow(2, i - 1)), e_delta * 3, 1);
-	}
-*/
-
-
-
-
-
-	//data write from host to kernel memory
-	clError = clEnqueueWriteBuffer(queue,ocl_ScaledDepth[0], CL_TRUE, 0,computationSize.x * computationSize.y * sizeof(float), ScaledDepth[0], 0, NULL, &write_event[0]);
-	checkErr(clError, "clEnqueueReadBuffer");
-
-/////////////////
-
-
-
-	// half sample the input depth maps into the pyramid levels
-	for (unsigned int i = 1; i < iterations.size(); ++i) {
-		//halfSampleRobustImage(ScaledDepth[i], ScaledDepth[i-1], make_uint2( inputSize.x  / (int)pow(2,i) , inputSize.y / (int)pow(2,i) )  , e_delta * 3, 1);
-		uint2 outSize = make_uint2(computationSize.x / (int) pow(2, i),
-				computationSize.y / (int) pow(2, i));
-
-		float e_d = e_delta * 3;
-		int r = 1;
-		uint2 inSize = outSize * 2;
-
-		//std::cout<<inSize.x<<"  "<<inSize.y<<std::endl;
-
-		int arg = 0;
-		clError = clSetKernelArg(kernel_1, arg++,
-				sizeof(cl_mem), &ocl_ScaledDepth[i]);
-		checkErr(clError, "clSetKernelArg");
-		clError = clSetKernelArg(kernel_1, arg++,
-				sizeof(cl_mem), &ocl_ScaledDepth[i - 1]);
-		checkErr(clError, "clSetKernelArg");
-		clError = clSetKernelArg(kernel_1, arg++,
-				sizeof(cl_uint2), &inSize);
-		checkErr(clError, "clSetKernelArg");
-		clError = clSetKernelArg(kernel_1, arg++,
-				sizeof(cl_float), &e_d);
-		checkErr(clError, "clSetKernelArg");
-   
- 	  clError = clSetKernelArg(kernel_1, arg++, sizeof(cl_uint2),
-			&outSize);
-	  checkErr(clError, "clSetKernelArg");
-
-
-
-
-   
-
-		size_t globalWorksize[2] = { outSize.x, outSize.y };
-
-
  
-	clError = clEnqueueTask(queue, kernel_1, 1,&write_event[0] , &kernel_event[i-1]);
-	checkErr(clError, "clEnqueueNDRangeKernel");
- 
-
-
-////////////	read data back from kernel scaled_depth=ocl_scaled_depth
-		clError = clEnqueueReadBuffer(queue,ocl_ScaledDepth[i], CL_TRUE, 0,computationSize.x * computationSize.y * sizeof(float)/(int) pow(2, i), ScaledDepth[i], 1, &kernel_event[i-1], &finish_event[i-1]);
-		checkErr(clError, "clEnqueueReadBuffer");
+      
+      halfSampleRobustImageKernel(ScaledDepth[i], ScaledDepth[i - 1],
+        make_uint2(computationSize.x / (int) pow(2, i - 1),
+    						computationSize.y / (int) pow(2, i - 1)), e_delta * 3, 1);
+                                    
 	}
 
 
 
-//////////////
 
-   		//data write from host to kernel memory
-		clError = clEnqueueWriteBuffer(queue,ocl_ScaledDepth[0], CL_TRUE, 0,computationSize.x * computationSize.y/ (int) pow(2, 0) * sizeof(float), ScaledDepth[0], 0, NULL, &write_event[0]);
-		checkErr(clError, "clEnqueueReadBuffer");
-
-
-		//data write from host to kernel memory
-		clError = clEnqueueWriteBuffer(queue,ocl_ScaledDepth[1], CL_TRUE, 0,computationSize.x * computationSize.y/ (int) pow(2, 1) * sizeof(float), ScaledDepth[1], 1,  &write_event[0], &write_event[1]);
-		checkErr(clError, "clEnqueueReadBuffer");
-
-
-		//data write from host to kernel memory
-		clError = clEnqueueWriteBuffer(queue,ocl_ScaledDepth[2], CL_TRUE, 0,computationSize.x * computationSize.y / (int) pow(2, 2)* sizeof(float), ScaledDepth[2], 1, &write_event[1], &write_event[2]);
-		checkErr(clError, "clEnqueueReadBuffer");
-	/////////////////////////////////////////////////////////////////
-
-   
-  cl_mem  invK_buffer=clCreateBuffer(context, CL_MEM_READ_ONLY,sizeof(Matrix4),NULL,NULL);
 
 	// prepare the 3D information from the input depth maps
 	uint2 localimagesize = computationSize;
-
 	for (unsigned int i = 0; i < iterations.size(); ++i) {
 		Matrix4 invK = getInverseCameraMatrix(k / float(1 << i));
-		//depth2vertexKernel(inputVertex[i], ScaledDepth[i], localimagesize,
-		//		invK);
    
-    clError = clEnqueueWriteBuffer(queue,invK_buffer, CL_TRUE, 0, sizeof(Matrix4), &invK, 0, NULL, NULL);
-    checkErr(clError, "clEnqueueReadBuffer");
-   
-		//depth2vertexKernel(inputVertex[i], ScaledDepth[i], localimagesize,
-		//		invK);
+        
  
-		uint2 imageSize = localimagesize;
-		// Create kernel
-
-		int arg = 0;
-		clError = clSetKernelArg(kernel_2, arg++, sizeof(cl_mem),
-				&ocl_inputVertex[i]);
-		checkErr(clError, "clSetKernelArg");
-		clError = clSetKernelArg(kernel_2, arg++,
-				sizeof(cl_uint2), &imageSize);
-		checkErr(clError, "clSetKernelArg");
-		clError = clSetKernelArg(kernel_2, arg++, sizeof(cl_mem),
-				&ocl_ScaledDepth[i]);
-		checkErr(clError, "clSetKernelArg");
-		clError = clSetKernelArg(kernel_2, arg++,
-				sizeof(cl_uint2), &imageSize);
-		checkErr(clError, "clSetKernelArg");
-		clError = clSetKernelArg(kernel_2, arg++,
-				sizeof(cl_mem), &invK_buffer);
-		checkErr(clError, "clSetKernelArg");
    
- 		clError = clSetKernelArg(kernel_2, arg++,
-				sizeof(cl_uint2), &imageSize);
-		checkErr(clError, "clSetKernelArg");
-
-
+		depth2vertexKernel(inputVertex[i], ScaledDepth[i], localimagesize,
+				invK);
+        
+        
+  
+      
+      
+		vertex2normalKernel(inputNormal[i], inputVertex[i], localimagesize);
    
-   
-		size_t globalWorksize[2] = { imageSize.x, imageSize.y };
 
-
-		clError = clEnqueueTask (queue, kernel_2, 1, &write_event[2], &kernel_event[i]);
-		checkErr(clError, "clEnqueueNDRangeKernel");
-
-
-/*
-////////////	read data back from kernel inpit_vertex=ocl_input_vertex
-		clError = clEnqueueReadBuffer(queue,ocl_inputVertex[i], CL_TRUE, 0,computationSize.x * computationSize.y * sizeof(float3)/(int) pow(2, i), inputVertex[i], 1,&kernel_event[i], &finish_event[i]);
-		checkErr(clError, "clEnqueueReadBuffer");
-
-
-///////////////
-
- 		//vertex2normalKernel(inputNormal[i], inputVertex[i], localimagesize);
-    
-  
- 
-
-		//data write from host to kernel memory
-		clError = clEnqueueWriteBuffer(queue,ocl_inputVertex[i], CL_TRUE, 0,computationSize.x * computationSize.y/ (int) pow(2, i) * sizeof(float3), inputVertex[i], 0, NULL, &write_event[0]);
-		checkErr(clError, "clEnqueueReadBuffer");
-
-
-*/
-
-		arg = 0;
-		clError = clSetKernelArg(kernel_3, arg++,
-				sizeof(cl_mem), &ocl_inputNormal[i]);
-		checkErr(clError, "clSetKernelArg");
-		clError = clSetKernelArg(kernel_3, arg++,
-				sizeof(cl_uint2), &imageSize);
-		checkErr(clError, "clSetKernelArg");
-		//clError = clSetKernelArg(kernel_3, arg++,
-		//		sizeof(cl_mem), &ocl_inputVertex[i]);
-		//checkErr(clError, "clSetKernelArg");
-		clError = clSetKernelArg(kernel_3, arg++,
-				sizeof(cl_uint2), &imageSize);
-		checkErr(clError, "clSetKernelArg");
-
- 		clError = clSetKernelArg(kernel_3, arg++,
-				sizeof(cl_uint2), &imageSize);
-		checkErr(clError, "clSetKernelArg");
-   
-		size_t globalWorksize2[2] = { imageSize.x, imageSize.y };
-
-
-		clError = clEnqueueTask (queue, kernel_3, 1, &write_event[2], &kernel_event[i]);
-		checkErr(clError, "clEnqueueNDRangeKernel");
-   
-   
-////////////	read data back from kernel inpit_vertex=ocl_input_vertex
-		clError = clEnqueueReadBuffer(queue,ocl_inputNormal[i], CL_TRUE, 0,computationSize.x * computationSize.y * sizeof(float3)/(int) pow(2, i), inputNormal[i], 1, &kernel_event[i], &finish_event[i]);
-		checkErr(clError, "clEnqueueReadBuffer");
-
-
-///////////////
-   
-  
-  
-  
-  
-  
-  
-  
     
 		localimagesize = make_uint2(localimagesize.x / 2, localimagesize.y / 2);
 	}
-   
-   
-   
-   
-   
-
-		//data write from host to kernel memory
-
-
-		//input vertex
-		clError = clEnqueueWriteBuffer(queue,ocl_inputVertex[0], CL_TRUE, 0,computationSize.x * computationSize.y/ (int) pow(2, 0) * sizeof(float3), inputVertex[0], 0, NULL, &write_event[0]);
-		checkErr(clError, "clEnqueueReadBuffer");
-
-
-		//data write from host to kernel memory
-		clError = clEnqueueWriteBuffer(queue,ocl_inputVertex[1], CL_TRUE, 0,computationSize.x * computationSize.y/ (int) pow(2, 1) * sizeof(float3), inputVertex[1], 0, NULL, &write_event[1]);
-		checkErr(clError, "clEnqueueReadBuffer");
-
-
-		//data write from host to kernel memory
-		clError = clEnqueueWriteBuffer(queue,ocl_inputVertex[2], CL_TRUE, 0,computationSize.x * computationSize.y / (int) pow(2, 2)* sizeof(float3), inputVertex[2], 0, NULL, &write_event[2]);
-		checkErr(clError, "clEnqueueReadBuffer");
-
-
-
-
-		
-		//input normal
-		clError = clEnqueueWriteBuffer(queue,ocl_inputNormal[0], CL_TRUE, 0,computationSize.x * computationSize.y/ (int) pow(2, 0) * sizeof(float3), inputNormal[0], 0, NULL, &write_event[3]);
-		checkErr(clError, "clEnqueueReadBuffer");
-
-
-		//data write from host to kernel memory
-		clError = clEnqueueWriteBuffer(queue,ocl_inputNormal[1], CL_TRUE, 0,computationSize.x * computationSize.y/ (int) pow(2, 1) * sizeof(float3), inputNormal[1], 0, NULL, &write_event[4]);
-		checkErr(clError, "clEnqueueReadBuffer");
-
-
-		//data write from host to kernel memory
-		clError = clEnqueueWriteBuffer(queue,ocl_inputNormal[2], CL_TRUE, 0,computationSize.x * computationSize.y / (int) pow(2, 2)* sizeof(float3), inputNormal[2], 0, NULL, &write_event[5]);
-		checkErr(clError, "clEnqueueReadBuffer");
-
-		//normal
-		clError = clEnqueueWriteBuffer(queue,ocl_normal, CL_TRUE, 0,computationSize.x * computationSize.y *sizeof(float3), normal, 0, NULL, &write_event[6]);
-		checkErr(clError, "clEnqueueReadBuffer");
-
-		//vertex
-		clError = clEnqueueWriteBuffer(queue,ocl_vertex, CL_TRUE, 0,computationSize.x * computationSize.y *sizeof(float3), vertex, 0, NULL, &write_event[7]);
-		checkErr(clError, "clEnqueueReadBuffer");
-
-
-
-/////////////////////
-
-
-    
-    
-    
-
 
 	oldPose = pose;
 	const Matrix4 projectReference = getCameraMatrix(k) * inverse(raycastPose);
-
-
-////////track kernel
-  int read_counter=-1;
-  
-  cl_mem  pose_buffer=clCreateBuffer(context, CL_MEM_READ_ONLY,sizeof(Matrix4),NULL,NULL);
-  cl_mem  project_buffer=clCreateBuffer(context, CL_MEM_READ_ONLY,sizeof(Matrix4),NULL,NULL);
-  
-  
-
-///////////////////    
-
 
 	for (int level = iterations.size() - 1; level >= 0; --level) {
 		uint2 localimagesize = make_uint2(
@@ -1674,94 +997,23 @@ bool Kfusion::tracking(float4 k, float icp_threshold, uint tracking_rate,
 				computationSize.y / (int) pow(2, level));
 		for (int i = 0; i < iterations[level]; ++i) {
 
-			//trackKernel(trackingResult, inputVertex[level], inputNormal[level],
-			//		localimagesize, vertex, normal, computationSize, pose,
-			//		projectReference, dist_threshold, normal_threshold);
-      
-      
-      
-      	//trackKernel(trackingResult, inputVertex[level], inputNormal[level],
-			//		localimagesize, vertex, normal, computationSize, pose,
-			//		projectReference, dist_threshold, normal_threshold);
-      
-      clError = clEnqueueWriteBuffer(queue,pose_buffer, CL_TRUE, 0, sizeof(Matrix4), &pose, 0, NULL, NULL);
-      checkErr(clError, "clEnqueueReadBuffer");
-      
-      clError = clEnqueueWriteBuffer(queue,project_buffer, CL_TRUE, 0, sizeof(Matrix4), &projectReference, 0, NULL, &write_event[8]);
-      checkErr(clError, "clEnqueueReadBuffer");
-  
- 	    int arg = 0;
-			clError = clSetKernelArg(kernel_4, arg++, sizeof(cl_mem),
-					&ocl_trackingResult);
-			checkErr(clError, "clSetKernelArg");
-			clError = clSetKernelArg(kernel_4, arg++, sizeof(cl_uint2),
-					&computationSize);
-			checkErr(clError, "clSetKernelArg");
-			clError = clSetKernelArg(kernel_4, arg++, sizeof(cl_mem),
-					&ocl_inputVertex[level]);
-			checkErr(clError, "clSetKernelArg");
-			clError = clSetKernelArg(kernel_4, arg++, sizeof(cl_uint2),
-					&localimagesize);
-			checkErr(clError, "clSetKernelArg");
-			clError = clSetKernelArg(kernel_4, arg++, sizeof(cl_mem),
-					&ocl_inputNormal[level]);
-			checkErr(clError, "clSetKernelArg");
-			clError = clSetKernelArg(kernel_4, arg++, sizeof(cl_uint2),
-					&localimagesize);
-			checkErr(clError, "clSetKernelArg");
-			clError = clSetKernelArg(kernel_4, arg++, sizeof(cl_mem),
-					&ocl_vertex);
-			checkErr(clError, "clSetKernelArg");
-			clError = clSetKernelArg(kernel_4, arg++, sizeof(cl_uint2),
-					&computationSize);
-			checkErr(clError, "clSetKernelArg");
-			clError = clSetKernelArg(kernel_4, arg++, sizeof(cl_mem),
-					&ocl_normal);
-			checkErr(clError, "clSetKernelArg");
-			clError = clSetKernelArg(kernel_4, arg++, sizeof(cl_uint2),
-					&computationSize);
-			checkErr(clError, "clSetKernelArg");
-			clError = clSetKernelArg(kernel_4, arg++, sizeof(cl_mem),
-					&pose_buffer);
-			checkErr(clError, "clSetKernelArg");
-			clError = clSetKernelArg(kernel_4, arg++, sizeof(cl_mem),
-					&project_buffer);
-			checkErr(clError, "clSetKernelArg");
-			clError = clSetKernelArg(kernel_4, arg++, sizeof(cl_float),
-					&dist_threshold);
-			checkErr(clError, "clSetKernelArg");
-			clError = clSetKernelArg(kernel_4, arg++, sizeof(cl_float),
-					&normal_threshold);
-			checkErr(clError, "clSetKernelArg");
-      
-      clError = clSetKernelArg(kernel_4, arg++,
-      sizeof(cl_uint2), &localimagesize);
-      checkErr(clError, "clSetKernelArg");
-
-			size_t globalWorksize[2] = { localimagesize.x, localimagesize.y };
-
-			clError = clEnqueueNDRangeKernel(queue, kernel_4, 2,
-					NULL, globalWorksize, NULL,1, &write_event[8], &kernel_event[++read_counter]);
-			checkErr(clError, "clEnqueueNDRangeKernel");
 
 
-
-		//clError = clEnqueueTask (queue, kernel, 1, &write_event[8], &kernel_event[++read_counter]);
-		//checkErr(clError, "clEnqueueNDRangeKernel");
-	
-
-			////////////	read data back from kernel 
-					clError = clEnqueueReadBuffer(queue,ocl_trackingResult, CL_TRUE, 0,computationSize.x * computationSize.y * sizeof(TrackData), trackingResult, 1, &kernel_event[read_counter], &finish_event[read_counter]);
-					checkErr(clError, "clEnqueueReadBuffer");
-
+    
 
       
-      
-      
+			trackKernel(trackingResult, inputVertex[level], inputNormal[level],
+					localimagesize, vertex, normal, computationSize, pose,
+					projectReference, dist_threshold, normal_threshold);
+ 
 
 
 			reduceKernel(reductionoutput, trackingResult, computationSize,
 					localimagesize);
+                          
+
+    
+    
 
 			if (updatePoseKernel(pose, reductionoutput, icp_threshold))
 				break;
@@ -1778,10 +1030,21 @@ bool Kfusion::raycasting(float4 k, float mu, uint frame) {
 	bool doRaycast = false;
 
 	if (frame > 2) {
+
+   
 		raycastPose = pose;
+   
+
+     
+
+    
+    
 		raycastKernel(vertex, normal, computationSize, volume,
 				raycastPose * getInverseCameraMatrix(k), nearPlane, farPlane,
 				step, 0.75f * mu);
+        
+
+    
 	}
 
 	return doRaycast;
@@ -1795,8 +1058,12 @@ bool Kfusion::integration(float4 k, uint integration_rate, float mu,
 			computationSize, track_threshold);
 
 	if ((doIntegrate && ((frame % integration_rate) == 0)) || (frame <= 3)) {
+ 
+     
+     
 		integrateKernel(volume, floatDepth, computationSize, inverse(pose),
 				getCameraMatrix(k), mu, maxweight);
+    
 		doIntegrate = true;
 	} else {
 		doIntegrate = false;
@@ -1834,18 +1101,37 @@ void Kfusion::dumpVolume(std::string filename) {
 
 void Kfusion::renderVolume(uchar4 * out, uint2 outputSize, int frame,
 		int raycast_rendering_rate, float4 k, float largestep) {
-	if (frame % raycast_rendering_rate == 0)
+	if (frame % raycast_rendering_rate == 0){
+ 
+   //auto start = std::chrono::high_resolution_clock::now();   
+
+
+  
+  
 		renderVolumeKernel(out, outputSize, volume,
 				*(this->viewPose) * getInverseCameraMatrix(k), nearPlane,
 				farPlane * 2.0f, step, largestep, light, ambient);
+        
+         
+  //auto finish = std::chrono::high_resolution_clock::now();
+  //double kernel_time= std::chrono::duration_cast<std::chrono::nanoseconds>(finish-start).count();
+  //write_vector.push_back( computeEventDuration(&write_event[0]) );
+  //kernel_vector.push_back(kernel_time);
+  //read_vector.push_back ( computeEventDuration(&finish_event[0]) );
+  }
 }
 
 void Kfusion::renderTrack(uchar4 * out, uint2 outputSize) {
+
+  
 	renderTrackKernel(out, trackingResult, outputSize);
+ 
 }
 
 void Kfusion::renderDepth(uchar4 * out, uint2 outputSize) {
+      
 	renderDepthKernel(out, floatDepth, outputSize, nearPlane, farPlane);
+    
 }
 
 void Kfusion::computeFrame(const ushort * inputDepth, const uint2 inputSize,

@@ -28,7 +28,7 @@ endif(CUDA_FOUND)
 if(APPLE)
     set(common_libraries     stdc++ pthread)
 else(APPLE)
-    set(common_libraries     rt stdc++ pthread  $ENV{AOCL_COMPILE_CONFIG} $ENV{AOCL_LINK_CONFIG})
+    set(common_libraries     rt stdc++ pthread)
 endif(APPLE)
 
 
@@ -50,11 +50,10 @@ add_version(${appname} openmp "-fopenmp" "-fopenmp")
 
 
  #  ----------------- OCL VERSION ----------------- 
-
+ 
 if (OPENCL_FOUND) 
-
    include_directories(${OPENCL_INCLUDE_DIRS})
-    add_library(${appname}-opencl   src/opencl/kernels.cpp src/opencl/common_opencl.cpp)
+    add_library(${appname}-opencl  src/opencl/kernels.cpp src/opencl/common_opencl.cpp)
     target_link_libraries(${appname}-opencl   ${common_libraries} ${OPENCL_LIBRARIES})
 
     add_version(${appname} opencl "" "")
